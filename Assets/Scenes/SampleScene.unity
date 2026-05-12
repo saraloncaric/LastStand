@@ -792,8 +792,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75b273cbde793b448b0b67fae7b80f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeploymentSystem
-  economy: {fileID: 0}
-  vojnik: {fileID: 0}
+  economy: {fileID: 1847560483}
+  vojnik: {fileID: 845049557}
   lokacije: []
   cijenaVojnika: 10
 --- !u!1001 &287737196
@@ -1816,6 +1816,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1941,6 +1942,23 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d5f849362388c446b685188f5f15202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  moveSpeed: 20
+  zoomSpeed: 5
+  minZoom: 10
+  maxZoom: 80
+  edgeScrollSize: 20
 --- !u!1001 &377437940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3752,10 +3770,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f57478c91a65ac4e98065dcac57e0cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
-  economy: {fileID: 0}
-  gameManager: {fileID: 0}
-  CoinsText: {fileID: 0}
-  FazaText: {fileID: 0}
+  economy: {fileID: 1847560483}
+  gameManager: {fileID: 1724965156}
+  CoinsText: {fileID: 1574706212}
+  FazaText: {fileID: 419989026}
 --- !u!1001 &800025937
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5315,7 +5333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba7310e528837384597ad8627cb07e90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RepairSystem
-  economy: {fileID: 0}
+  economy: {fileID: 1847560483}
   cijenaPopravka: 5
 --- !u!4 &1153920022
 Transform:
@@ -7520,7 +7538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   trenutnafaza: 0
-  economy: {fileID: 0}
+  economy: {fileID: 1847560483}
 --- !u!4 &1727481412 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8107190456209775893, guid: 57ef16ee7712da6409e8836bf6001e3c, type: 3}
