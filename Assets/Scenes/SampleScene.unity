@@ -220,6 +220,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c2cabd72c2871e4fa25d9761a86fef5, type: 3}
+--- !u!1 &42667954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 42667955}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &42667955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42667954}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 1118.309, y: 170.77, z: 570}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 845049562}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &51154940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1662,11 +1693,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6146416746057084839, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 625104212}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 287737200}
+    - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 287737205}
+    - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 287737204}
+    - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 287737203}
   m_SourcePrefab: {fileID: 100100000, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
 --- !u!1 &287737197 stripped
 GameObject:
@@ -1698,6 +1741,55 @@ MonoBehaviour:
   armorPartsRoot: {fileID: 287737199}
   facePartsRoot: {fileID: 287737198}
   showHelmet: 0
+--- !u!4 &287737202 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6146416746057084839, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+  m_PrefabInstance: {fileID: 287737196}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &287737203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287737197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09bb4ecdc1dec1a489eb378e92bfde6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponStats
+  damage: 20
+  projectileSpeed: 15
+  fireRate: 1.5
+--- !u!114 &287737204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287737197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07a982491ce08a4a8d95eaa5cb6b518, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoldierAI
+  projectilePrefab: {fileID: 5354562596282687935, guid: 6e2afa6083c57ff41b26e95c4683d47e, type: 3}
+  firePoint: {fileID: 625104212}
+  detectionRange: 15
+--- !u!114 &287737205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287737197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 100
+  currentHealth: 0
 --- !u!1001 &293406077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2603,6 +2695,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 6888824292853139327, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2830,6 +2926,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 377437944}
+    - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 377437947}
   m_SourcePrefab: {fileID: 100100000, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
 --- !u!1 &377437941 stripped
 GameObject:
@@ -2861,6 +2960,20 @@ MonoBehaviour:
   armorPartsRoot: {fileID: 377437943}
   facePartsRoot: {fileID: 377437942}
   showHelmet: 1
+--- !u!114 &377437947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377437941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 100
+  currentHealth: 0
 --- !u!4 &391389328 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8107190456209775893, guid: 57ef16ee7712da6409e8836bf6001e3c, type: 3}
@@ -3414,6 +3527,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6527966746742178781, guid: 9ef95eb74fbef4145bc387e83b897495, type: 3}
   m_PrefabInstance: {fileID: 1454830118}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &625104211
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 625104212}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &625104212
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625104211}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 1118.951, y: 170.77, z: 570}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 287737202}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &703471743
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4859,11 +5003,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6146416746057084839, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 42667955}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 845049560}
+    - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 845049565}
+    - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 845049564}
+    - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 845049563}
   m_SourcePrefab: {fileID: 100100000, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
 --- !u!1 &845049557 stripped
 GameObject:
@@ -4895,6 +5051,55 @@ MonoBehaviour:
   armorPartsRoot: {fileID: 845049559}
   facePartsRoot: {fileID: 845049558}
   showHelmet: 0
+--- !u!4 &845049562 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6146416746057084839, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+  m_PrefabInstance: {fileID: 845049556}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &845049563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845049557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09bb4ecdc1dec1a489eb378e92bfde6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponStats
+  damage: 20
+  projectileSpeed: 15
+  fireRate: 1.5
+--- !u!114 &845049564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845049557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07a982491ce08a4a8d95eaa5cb6b518, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoldierAI
+  projectilePrefab: {fileID: 5354562596282687935, guid: 6e2afa6083c57ff41b26e95c4683d47e, type: 3}
+  firePoint: {fileID: 42667955}
+  detectionRange: 15
+--- !u!114 &845049565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845049557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 100
+  currentHealth: 0
 --- !u!1001 &861390002
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6842,6 +7047,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 6888824292853139327, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7069,6 +7278,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1526962288}
+    - targetCorrespondingSourceObject: {fileID: 6775566527582106909, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1526962291}
   m_SourcePrefab: {fileID: 100100000, guid: 241e250ae7c639e4fa5849326e877ca3, type: 3}
 --- !u!1 &1526962285 stripped
 GameObject:
@@ -7100,6 +7312,20 @@ MonoBehaviour:
   armorPartsRoot: {fileID: 1526962287}
   facePartsRoot: {fileID: 1526962286}
   showHelmet: 1
+--- !u!114 &1526962291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526962285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 100
+  currentHealth: 0
 --- !u!1001 &1568246168
 PrefabInstance:
   m_ObjectHideFlags: 0
