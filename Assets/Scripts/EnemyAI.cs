@@ -8,7 +8,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] float _moveSpeed = 3.5f;
     [SerializeField] float _attackDamage = 10f;
 
-    const float GoalReachDistance = 2f;
+    const float GoalReachDistance = 10f;
     const float AttackCooldown = 2f;
 
     NavMeshAgent _agent;
