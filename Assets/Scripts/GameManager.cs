@@ -2,21 +2,52 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     public enum GamePhase { Priprema, Val, GameOver }
     public GamePhase trenutnafaza;
-    public EconomyManager economy;
+    public int trenutniVal = 0;
+    public float timer = 0f;
+
+    void Awake() {
+        Instance = this;
+    }
+
     void Start() {
         trenutnafaza = GamePhase.Priprema;
-        Debug.Log("Faza pripreme! Potroši svoje coinse mudro.");
+        timer = 180f; 
+        Debug.Log("Priprema počinje!");
     }
-    public void StartVal() {
-        if(trenutnafaza == GamePhase.Priprema) {
+
+    void Update() {
+        if (trenutnafaza == GamePhase.GameOver) return;
+
+        timer -= Time.deltaTime;
+        if (timer <= 0f)
+            SljedecaFaza();
+    }
+
+    void SljedecaFaza() {
+        if (trenutnafaza == GamePhase.Priprema) {
+            trenutniVal++;
             trenutnafaza = GamePhase.Val;
-            Debug.Log("Val počinje! Neprijatelji napadaju.");
+
+            if (trenutniVal == 1) timer = 300f;      
+            else if (trenutniVal == 2) timer = 420f; 
+            else if (trenutniVal == 3) timer = 600f; 
+        }
+        else if (trenutnafaza == GamePhase.Val) {
+            if (trenutniVal == 3) {
+                TriggerGameOver(); 
+                return;
+            }
+            trenutnafaza = GamePhase.Priprema;
+            timer = 300f; 
         }
     }
+
     public void TriggerGameOver() {
         trenutnafaza = GamePhase.GameOver;
-        Debug.Log("Glavni toranj je pao. Game Over!");
+        Debug.Log("Game Over!");
     }
 }
