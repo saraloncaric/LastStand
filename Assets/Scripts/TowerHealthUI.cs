@@ -4,48 +4,66 @@ using TMPro;
 public class TowerHealthUI : MonoBehaviour
 {
     public Health glavniToranj;
-    public Health[] zidovi;
     public Health lijeviBocniToranj;
     public Health desniBocniToranj;
+    public Health zid;
 
     public TextMeshProUGUI glavniToranjText;
-    public TextMeshProUGUI zidoviText;
-    public TextMeshProUGUI lijeviToranjText;
-    public TextMeshProUGUI desniToranjText;
+    public TextMeshProUGUI lijevoText;
+    public TextMeshProUGUI desnoText;
+    public TextMeshProUGUI zidText;
 
     public EconomyManager economy;
     public int cijenaPopravka = 4;
 
-    void Update()
-    {
-        if (glavniToranj != null)
+    void Update() {
+        if (glavniToranj != null) {
             glavniToranjText.text = "Glavni toranj: " + glavniToranj.currentHealth + "/" + glavniToranj.maxHealth;
-
-        if (zidovi.Length > 0)
-            zidoviText.text = "Zidovi: " + zidovi[0].currentHealth + "/" + zidovi[0].maxHealth;
-
-        if (lijeviBocniToranj != null)
-            lijeviToranjText.text = "Lijevi toranj: " + lijeviBocniToranj.currentHealth + "/" + lijeviBocniToranj.maxHealth;
-
-        if (desniBocniToranj != null)
-            desniToranjText.text = "Desni toranj: " + desniBocniToranj.currentHealth + "/" + desniBocniToranj.maxHealth;
+        }
+        if (lijeviBocniToranj != null) {
+            lijevoText.text = "Lijevi toranj: " + lijeviBocniToranj.currentHealth + "/" + lijeviBocniToranj.maxHealth;
+        }
+        if (desniBocniToranj != null) {
+            desnoText.text = "Desni toranj: " + desniBocniToranj.currentHealth + "/" + desniBocniToranj.maxHealth;
+        }
+        if (zid != null) {
+            zidText.text = "Zid: " + zid.currentHealth + "/" + zid.maxHealth;
+        }
     }
 
-    public void RepairAll()
-    {
-        if (economy.coins < cijenaPopravka) return;
+    public void PopraviGlavniToranj() {
+        if (economy.coins < cijenaPopravka) { 
+            Debug.Log("Nema dovoljno coinsa!"); 
+            return; 
+        }
         economy.coins -= cijenaPopravka;
+        glavniToranj.currentHealth = glavniToranj.maxHealth;
+    }
 
-        if (glavniToranj != null)
-            glavniToranj.currentHealth = glavniToranj.maxHealth;
+    public void PopraviLijevo() {
+        if (economy.coins < cijenaPopravka) { 
+            Debug.Log("Nema dovoljno coinsa!"); 
+            return; 
+        }
+        economy.coins -= cijenaPopravka;
+        lijeviBocniToranj.currentHealth = lijeviBocniToranj.maxHealth;
+    }
 
-        foreach (var z in zidovi)
-            z.currentHealth = z.maxHealth;
+    public void PopraviDesno() {
+        if (economy.coins < cijenaPopravka) { 
+            Debug.Log("Nema dovoljno coinsa!"); 
+            return; 
+        }
+        economy.coins -= cijenaPopravka;
+        desniBocniToranj.currentHealth = desniBocniToranj.maxHealth;
+    }
 
-        if (lijeviBocniToranj != null)
-            lijeviBocniToranj.currentHealth = lijeviBocniToranj.maxHealth;
-
-        if (desniBocniToranj != null)
-            desniBocniToranj.currentHealth = desniBocniToranj.maxHealth;
+    public void PopraviZid() {
+        if (economy.coins < cijenaPopravka) { 
+            Debug.Log("Nema dovoljno coinsa!"); 
+            return; 
+        }
+        economy.coins -= cijenaPopravka;
+        zid.currentHealth = zid.maxHealth;
     }
 }
