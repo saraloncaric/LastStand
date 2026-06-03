@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public UIManager uiManager;
 
     public enum GamePhase { Priprema, Val, GameOver }
     public GamePhase trenutnafaza;
@@ -49,5 +50,6 @@ public class GameManager : MonoBehaviour
     public void TriggerGameOver() {
         trenutnafaza = GamePhase.GameOver;
         Debug.Log("Game Over!");
+        uiManager.PrikaziGameOver();
     }
 }

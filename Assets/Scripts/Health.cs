@@ -4,6 +4,7 @@ public class Health : MonoBehaviour
 {
     public float maxHealth = 100f;
     public float currentHealth;
+    public bool isTower = false;
 
     void Awake()
     {
@@ -18,7 +19,11 @@ public class Health : MonoBehaviour
         if (currentHealth <= 0f)
         {
             currentHealth = 0f;
-            Destroy(gameObject);
+            if(isTower) {
+                GameManager.Instance.TriggerGameOver();
+            } else {
+                Destroy(gameObject);
+            }
         }
     }
 }
