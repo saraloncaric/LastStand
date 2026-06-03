@@ -15,28 +15,35 @@ public class UIManager : MonoBehaviour
     public GameObject gameOverPanel;
 
     void Start() {
-        gameOverPanel.SetActive(false);
+        if (gameOverPanel != null) {
+            gameOverPanel.SetActive(false);
+        }
     }
 
     void Update() {
-        if (gameManager.trenutnafaza == GameManager.GamePhase.GameOver) {
-            return;
+        if (gameManager.trenutnafaza == GameManager.GamePhase.GameOver) return;
+
+        if (coinsText != null) {
+            coinsText.text = "Coins: " + economy.coins;
+        }
+        if (fazaText != null) {
+            fazaText.text = "Faza: " + gameManager.trenutnafaza.ToString();
         }
 
-        coinsText.text = "Coins: " + economy.coins;
-        fazaText.text = "Faza: " + gameManager.trenutnafaza.ToString();
-
-        if (gameManager.trenutniVal > 0) {
-            valText.text = "Val: " + gameManager.trenutniVal;
-        }
-        else {
-            valText.text = "Val: -";
+        if (valText != null) {
+            if (gameManager.trenutniVal > 0) {
+                valText.text = "Val: " + gameManager.trenutniVal;
+            } else {
+                valText.text = "Val: -";
+            }
         }
 
-        int sekunde = Mathf.CeilToInt(gameManager.timer);
-        int minute = sekunde / 60;
-        int sek = sekunde % 60;
-        timerText.text = string.Format("{0:00}:{1:00}", minute, sek);
+        if (timerText != null) {
+            int sekunde = Mathf.CeilToInt(gameManager.timer);
+            int minute = sekunde / 60;
+            int sek = sekunde % 60;
+            timerText.text = string.Format("{0:00}:{1:00}", minute, sek);
+        }
     }
 
     public void PrikaziGameOver() {
