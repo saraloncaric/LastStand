@@ -19,8 +19,6 @@ public class DeploymentSystem : MonoBehaviour
     public GameObject gumbPrefab;
     public Transform gumbContainer;
 
-    public GameObject oruzjePanel;
-    public Transform oruzjeContainer;
     public GameObject oruzjeGumbPrefab;
 
     int odabraniVojnikIndex = -1;
@@ -31,7 +29,6 @@ public class DeploymentSystem : MonoBehaviour
         for (int i = 0; i < 12; i++)
             vojnikLokacija[i] = -1;
 
-        oruzjePanel.SetActive(false);
         PrikaziVojnike();
     }
 
@@ -109,17 +106,22 @@ public class DeploymentSystem : MonoBehaviour
 
     public void OtvoriOruzje(int vojnikIndex) {
         odabraniVojnikIndex = vojnikIndex;
-        oruzjePanel.SetActive(true);
 
-        foreach (Transform child in oruzjeContainer)
+        foreach (Transform child in gumbContainer)
             Destroy(child.gameObject);
+
+        GameObject natragGumb = Instantiate(oruzjeGumbPrefab, gumbContainer);
+        natragGumb.GetComponentInChildren<TextMeshProUGUI>().text = "< Natrag";
+        natragGumb.GetComponentInChildren<Button>().onClick.AddListener(() => PrikaziVojnike());
 
         int val = gameManager.trenutniVal;
 
-        if (val <= 1)
+        if (val <= 1) {
             DodajOruzje("Luk", 3);
-        else if (val == 2)
+        }
+        else if (val == 2) {
             DodajOruzje("Bodež", 5);
+        }
         else {
             DodajOruzje("Mač", 6);
             DodajOruzje("Sjekira", 7);
@@ -127,9 +129,9 @@ public class DeploymentSystem : MonoBehaviour
     }
 
     void DodajOruzje(string naziv, int cijena) {
-        GameObject gumb = Instantiate(oruzjeGumbPrefab, oruzjeContainer);
+        GameObject gumb = Instantiate(oruzjeGumbPrefab, gumbContainer);
         gumb.GetComponentInChildren<TextMeshProUGUI>().text = naziv + " (" + cijena + " coins)";
-        gumb.GetComponent<Button>().onClick.AddListener(() => KupiOruzje(cijena));
+        gumb.GetComponentInChildren<Button>().onClick.AddListener(() => KupiOruzje(cijena));
     }
 
     void KupiOruzje(int cijena) {
@@ -138,7 +140,6 @@ public class DeploymentSystem : MonoBehaviour
             return;
         }
         economy.coins -= cijena;
-        oruzjePanel.SetActive(false);
         Debug.Log("Oružje kupljeno!");
     }
 }
