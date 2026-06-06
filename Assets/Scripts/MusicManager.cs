@@ -1,0 +1,99 @@
+using UnityEngine;
+
+public class MusicManager : MonoBehaviour
+{
+    public static MusicManager Instance { get; private set; }
+
+    [Header("Glazba")]
+    public AudioClip prepareMusic;   // svira tijekom pripreme
+    public AudioClip waveMusic;      // svira tijekom vala
+
+    [Header("Postavke")]
+    [Range(0f, 1f)] public float volume = 0.5f;
+    public float fadeDuration = 1.5f;
+
+    private AudioSource audioSource;
+    private bool fading = false;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.loop = true;
+        audioSource.volume = volume;
+    }
+
+    void Start()
+    {
+        WaveManager.OnWaveChanged += OnWaveChanged;
+        WaveManager.OnPreparePhase += OnPreparePhase;
+
+        PlayMusic(prepareMusic); // počni s glazbom pripreme
+    }
+
+    void OnDestroy()
+    {
+        WaveManager.OnWaveChanged -= OnWaveChanged;
+        WaveManager.OnPreparePhase -= OnPreparePhase;
+    }
+
+    void OnWaveChanged(int wave)
+    {
+        PlayMusic(waveMusic);
+    }
+
+    void OnPreparePhase()
+    {
+        PlayMusic(prepareMusic);
+    }
+
+    void PlayMusic(AudioClip clip)
+    {
+        if (clip == null || audioSource.clip == clip) return;
+
+        if (fading) StopAllCoroutines();
+        StartCoroutine(FadeToClip(clip));
+    }
+
+    System.Collections.IEnumerator FadeToClip(AudioClip newClip)
+    {
+        fading = true;
+
+        // Fade out
+        float startVolume = audioSource.volume;
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVolume, 0f, t / fadeDuration);
+            yield return null;
+        }
+
+        // Zamijeni clip
+        audioSource.Stop();
+        audioSource.clip = newClip;
+        audioSource.Play();
+
+        // Fade in
+        t = 0f;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(0f, volume, t / fadeDuration);
+            yield return null;
+        }
+
+        audioSource.volume = volume;
+        fading = false;
+    }
+}
