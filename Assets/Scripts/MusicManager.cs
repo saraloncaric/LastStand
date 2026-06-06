@@ -5,8 +5,8 @@ public class MusicManager : MonoBehaviour
     public static MusicManager Instance { get; private set; }
 
     [Header("Glazba")]
-    public AudioClip prepareMusic;   // svira tijekom pripreme
-    public AudioClip waveMusic;      // svira tijekom vala
+    public AudioClip prepareMusic;   
+    public AudioClip waveMusic;      
 
     [Header("Postavke")]
     [Range(0f, 1f)] public float volume = 0.5f;
@@ -38,7 +38,7 @@ public class MusicManager : MonoBehaviour
         WaveManager.OnWaveChanged += OnWaveChanged;
         WaveManager.OnPreparePhase += OnPreparePhase;
 
-        PlayMusic(prepareMusic); // počni s glazbom pripreme
+        PlayMusic(prepareMusic); 
     }
 
     void OnDestroy()
@@ -69,7 +69,7 @@ public class MusicManager : MonoBehaviour
     {
         fading = true;
 
-        // Fade out
+        
         float startVolume = audioSource.volume;
         float t = 0f;
         while (t < fadeDuration)
@@ -79,12 +79,12 @@ public class MusicManager : MonoBehaviour
             yield return null;
         }
 
-        // Zamijeni clip
+        
         audioSource.Stop();
         audioSource.clip = newClip;
         audioSource.Play();
 
-        // Fade in
+        
         t = 0f;
         while (t < fadeDuration)
         {
