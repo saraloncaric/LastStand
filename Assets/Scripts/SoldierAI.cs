@@ -2,20 +2,38 @@ using UnityEngine;
 
 public class SoldierAI : MonoBehaviour
 {
-    public GameObject projectilePrefab;
+    [Header("Referenca")]
     public Transform firePoint;
     public float detectionRange = 15f;
 
-    private WeaponStats stats;
+    [Header("Zvuk i animacija")]
+    public AudioClip attackSound;
+    public string attackAnimTrigger = "Attack";
+
+    private WeaponStats weaponStats;
     private float fireCooldown = 0f;
+    private AudioSource audioSource;
+    private Animator animator;
 
     void Start()
     {
-        stats = GetComponent<WeaponStats>();
+        weaponStats = GetComponent<WeaponStats>();
+        audioSource = GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
+
+        
+        WaveManager.OnWaveChanged += weaponStats.SetWave;
+    }
+
+    void OnDestroy()
+    {
+        WaveManager.OnWaveChanged -= weaponStats.SetWave;
     }
 
     void Update()
     {
+        if (weaponStats == null) return;
+
         GameObject target = FindClosestEnemy();
         if (target == null) return;
 
@@ -24,9 +42,62 @@ public class SoldierAI : MonoBehaviour
         fireCooldown -= Time.deltaTime;
         if (fireCooldown <= 0f)
         {
-            Shoot(target);
-            fireCooldown = stats.fireRate;
+            Attack(target);
+            fireCooldown = weaponStats.fireRate;
         }
+    }
+
+    void Attack(GameObject target)
+    {
+        
+        if (animator != null)
+            animator.SetTrigger(attackAnimTrigger);
+
+        if (audioSource != null && attackSound != null)
+            audioSource.PlayOneShot(attackSound);
+
+        if (weaponStats.isMelee)
+        {
+            
+            float dist = Vector3.Distance(transform.position, target.transform.position);
+            if (dist <= weaponStats.meleeRange)
+            {
+                Health health = target.GetComponent<Health>();
+                if (health != null)
+                    health.TakeDamage(weaponStats.damage);
+
+                
+                SpawnBloodCircle(target.transform.position);
+            }
+        }
+        else
+        {
+            
+            Shoot(target);
+        }
+    }
+
+    void Shoot(GameObject target)
+    {
+        if (weaponStats.projectilePrefab == null || firePoint == null) return;
+
+        GameObject proj = Instantiate(weaponStats.projectilePrefab, firePoint.position, firePoint.rotation);
+        Projectile p = proj.GetComponent<Projectile>();
+        if (p != null)
+        {
+            p.damage = weaponStats.damage;
+            p.speed = weaponStats.projectileSpeed;
+            p.bloodCirclePrefab = weaponStats.bloodCirclePrefab;
+        }
+    }
+
+    void SpawnBloodCircle(Vector3 position)
+    {
+        if (weaponStats.bloodCirclePrefab == null) return;
+
+        Vector3 pos = new Vector3(position.x, 0.02f, position.z);
+        GameObject circle = Instantiate(weaponStats.bloodCirclePrefab, pos, Quaternion.Euler(90f, 0f, 0f));
+        Destroy(circle, 3f);
     }
 
     GameObject FindClosestEnemy()
@@ -45,18 +116,5 @@ public class SoldierAI : MonoBehaviour
             }
         }
         return closest;
-    }
-
-    void Shoot(GameObject target)
-    {
-        if (projectilePrefab == null || firePoint == null) return;
-
-        GameObject proj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        Projectile p = proj.GetComponent<Projectile>();
-        if (p != null)
-        {
-            p.damage = stats.damage;
-            p.speed = stats.projectileSpeed;
-        }
     }
 }
