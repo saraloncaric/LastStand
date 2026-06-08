@@ -45,6 +45,7 @@ public class SoldierAI : MonoBehaviour
         transform.LookAt(target.transform);
 
         fireCooldown -= Time.deltaTime;
+
         if (fireCooldown <= 0f)
         {
             Attack(target);
@@ -70,8 +71,6 @@ public class SoldierAI : MonoBehaviour
 
                 if (health != null)
                     health.TakeDamage(weaponStats.damage);
-
-                SpawnBloodCircle(target.transform.position);
             }
         }
         else
@@ -96,23 +95,7 @@ public class SoldierAI : MonoBehaviour
         {
             p.damage = weaponStats.damage;
             p.speed = weaponStats.projectileSpeed;
-            p.bloodCirclePrefab = weaponStats.bloodCirclePrefab;
         }
-    }
-
-    void SpawnBloodCircle(Vector3 position)
-    {
-        if (weaponStats.bloodCirclePrefab == null) return;
-
-        Vector3 pos = new Vector3(position.x, 0.02f, position.z);
-
-        GameObject circle = Instantiate(
-            weaponStats.bloodCirclePrefab,
-            pos,
-            Quaternion.Euler(90f, 0f, 0f)
-        );
-
-        Destroy(circle, 3f);
     }
 
     GameObject FindClosestEnemy()
