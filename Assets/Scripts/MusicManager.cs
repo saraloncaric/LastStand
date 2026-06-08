@@ -5,8 +5,8 @@ public class MusicManager : MonoBehaviour
     public static MusicManager Instance { get; private set; }
 
     [Header("Glazba")]
-    public AudioClip prepareMusic;   
-    public AudioClip waveMusic;      
+    public AudioClip prepareMusic;
+    public AudioClip waveMusic;
 
     [Header("Postavke")]
     [Range(0f, 1f)] public float volume = 0.5f;
@@ -35,16 +35,16 @@ public class MusicManager : MonoBehaviour
 
     void Start()
     {
-        WaveManager.OnWaveChanged += OnWaveChanged;
-        WaveManager.OnPreparePhase += OnPreparePhase;
+        GameManager.OnWaveChanged += OnWaveChanged;
+        GameManager.OnPreparePhase += OnPreparePhase;
 
-        PlayMusic(prepareMusic); 
+        PlayMusic(prepareMusic);
     }
 
     void OnDestroy()
     {
-        WaveManager.OnWaveChanged -= OnWaveChanged;
-        WaveManager.OnPreparePhase -= OnPreparePhase;
+        GameManager.OnWaveChanged -= OnWaveChanged;
+        GameManager.OnPreparePhase -= OnPreparePhase;
     }
 
     void OnWaveChanged(int wave)
@@ -61,7 +61,9 @@ public class MusicManager : MonoBehaviour
     {
         if (clip == null || audioSource.clip == clip) return;
 
-        if (fading) StopAllCoroutines();
+        if (fading)
+            StopAllCoroutines();
+
         StartCoroutine(FadeToClip(clip));
     }
 
@@ -69,9 +71,9 @@ public class MusicManager : MonoBehaviour
     {
         fading = true;
 
-        
         float startVolume = audioSource.volume;
         float t = 0f;
+
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
@@ -79,13 +81,12 @@ public class MusicManager : MonoBehaviour
             yield return null;
         }
 
-        
         audioSource.Stop();
         audioSource.clip = newClip;
         audioSource.Play();
 
-        
         t = 0f;
+
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
