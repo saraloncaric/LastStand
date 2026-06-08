@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,6 +10,9 @@ public class GameManager : MonoBehaviour
     public GamePhase trenutnafaza;
     public int trenutniVal = 0;
     public float timer = 0f;
+
+    public static event Action<int> OnWaveChanged;
+    public static event Action OnPreparePhase;
 
     void Awake() {
         Instance = this;
@@ -33,6 +37,8 @@ public class GameManager : MonoBehaviour
             trenutniVal++;
             trenutnafaza = GamePhase.Val;
 
+            OnWaveChanged?.Invoke(trenutniVal);
+
             if (trenutniVal == 1) timer = 300f;      
             else if (trenutniVal == 2) timer = 420f; 
             else if (trenutniVal == 3) timer = 600f; 
@@ -42,7 +48,11 @@ public class GameManager : MonoBehaviour
                 TriggerGameOver(); 
                 return;
             }
+
             trenutnafaza = GamePhase.Priprema;
+
+            OnPreparePhase?.Invoke();
+
             timer = 300f; 
         }
     }
