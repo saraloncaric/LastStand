@@ -3,7 +3,7 @@ using UnityEngine;
 public class RepairSystem : MonoBehaviour
 {
     public EconomyManager economy;
-    public int cijenaPopravka = 5;
+    public int cijenaPopravka = 4;
 
     public void PokusajPopravak() {
         if(economy.coins >= cijenaPopravka) {
