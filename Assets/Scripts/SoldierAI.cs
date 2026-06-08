@@ -21,13 +21,18 @@ public class SoldierAI : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
 
-        
-        WaveManager.OnWaveChanged += weaponStats.SetWave;
+        if (weaponStats != null)
+        {
+            GameManager.OnWaveChanged += weaponStats.SetWave;
+        }
     }
 
     void OnDestroy()
     {
-        WaveManager.OnWaveChanged -= weaponStats.SetWave;
+        if (weaponStats != null)
+        {
+            GameManager.OnWaveChanged -= weaponStats.SetWave;
+        }
     }
 
     void Update()
@@ -49,7 +54,6 @@ public class SoldierAI : MonoBehaviour
 
     void Attack(GameObject target)
     {
-        
         if (animator != null)
             animator.SetTrigger(attackAnimTrigger);
 
@@ -58,21 +62,20 @@ public class SoldierAI : MonoBehaviour
 
         if (weaponStats.isMelee)
         {
-            
             float dist = Vector3.Distance(transform.position, target.transform.position);
+
             if (dist <= weaponStats.meleeRange)
             {
                 Health health = target.GetComponent<Health>();
+
                 if (health != null)
                     health.TakeDamage(weaponStats.damage);
 
-                
                 SpawnBloodCircle(target.transform.position);
             }
         }
         else
         {
-            
             Shoot(target);
         }
     }
@@ -81,8 +84,14 @@ public class SoldierAI : MonoBehaviour
     {
         if (weaponStats.projectilePrefab == null || firePoint == null) return;
 
-        GameObject proj = Instantiate(weaponStats.projectilePrefab, firePoint.position, firePoint.rotation);
+        GameObject proj = Instantiate(
+            weaponStats.projectilePrefab,
+            firePoint.position,
+            firePoint.rotation
+        );
+
         Projectile p = proj.GetComponent<Projectile>();
+
         if (p != null)
         {
             p.damage = weaponStats.damage;
@@ -96,7 +105,13 @@ public class SoldierAI : MonoBehaviour
         if (weaponStats.bloodCirclePrefab == null) return;
 
         Vector3 pos = new Vector3(position.x, 0.02f, position.z);
-        GameObject circle = Instantiate(weaponStats.bloodCirclePrefab, pos, Quaternion.Euler(90f, 0f, 0f));
+
+        GameObject circle = Instantiate(
+            weaponStats.bloodCirclePrefab,
+            pos,
+            Quaternion.Euler(90f, 0f, 0f)
+        );
+
         Destroy(circle, 3f);
     }
 
@@ -109,12 +124,14 @@ public class SoldierAI : MonoBehaviour
         foreach (GameObject enemy in enemies)
         {
             float dist = Vector3.Distance(transform.position, enemy.transform.position);
+
             if (dist < minDist)
             {
                 minDist = dist;
                 closest = enemy;
             }
         }
+
         return closest;
     }
 }
