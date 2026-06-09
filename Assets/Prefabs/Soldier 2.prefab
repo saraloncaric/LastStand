@@ -23909,6 +23909,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   currentHealth: 0
+  isTower: 0
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!114 &5571240470115533544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23921,9 +23924,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07a982491ce08a4a8d95eaa5cb6b518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoldierAI
-  projectilePrefab: {fileID: 5354562596282687935, guid: 6e2afa6083c57ff41b26e95c4683d47e, type: 3}
   firePoint: {fileID: 6533118722407950785}
   detectionRange: 15
+  attackSound: {fileID: 8300000, guid: 7c6041f0c73240840bf4f4e50a46d83b, type: 3}
+  attackAnimTrigger: Attack
 --- !u!114 &2562243681935028403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23936,9 +23940,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09bb4ecdc1dec1a489eb378e92bfde6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponStats
+  w1_damage: 15
+  w1_projectileSpeed: 20
+  w1_fireRate: 1.5
+  w1_projectilePrefab: {fileID: 5354562596282687935, guid: 6e2afa6083c57ff41b26e95c4683d47e, type: 3}
+  w2_damage: 25
+  w2_projectileSpeed: 25
+  w2_fireRate: 1.2
+  w2_projectilePrefab: {fileID: 5354562596282687935, guid: 6e2afa6083c57ff41b26e95c4683d47e, type: 3}
+  w3_damage: 40
+  w3_fireRate: 1
+  w3_meleeRange: 2.5
+  bloodCirclePrefab: {fileID: 7963325272182396357, guid: dac8e15cccf037f42b763a9ac981699d, type: 3}
   damage: 20
   projectileSpeed: 15
   fireRate: 1.5
+  meleeRange: 0
+  isMelee: 0
+  projectilePrefab: {fileID: 0}
 --- !u!1 &7200074877740429789
 GameObject:
   m_ObjectHideFlags: 0

@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void TriggerGameOver() {
+        if (trenutnafaza == GamePhase.GameOver) return;
         trenutnafaza = GamePhase.GameOver;
         Debug.Log("Game Over!");
         uiManager.PrikaziGameOver();

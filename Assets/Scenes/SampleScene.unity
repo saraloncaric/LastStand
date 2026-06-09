@@ -353,9 +353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &58543278
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,9 +894,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &89215641
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,11 +1458,61 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   isTower: 0
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!4 &217112967 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5785242846073902511, guid: 8c2cabd72c2871e4fa25d9761a86fef5, type: 3}
   m_PrefabInstance: {fileID: 1485782617}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &218981786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 218981787}
+  - component: {fileID: 218981788}
+  m_Layer: 0
+  m_Name: MusicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &218981787
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218981786}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1072.7451, y: 157.85013, z: 437.64236}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 773910794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &218981788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218981786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cfa70f1fd7f2524588803fe6c7f457c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicManager
+  prepareMusic: {fileID: 8300000, guid: 77b16e2259804cd4e97ab30feb14e63e, type: 3}
+  waveMusic: {fileID: 8300000, guid: 77b16e2259804cd4e97ab30feb14e63e, type: 3}
+  volume: 0.5
+  fadeDuration: 1.5
 --- !u!1 &240736554
 GameObject:
   m_ObjectHideFlags: 0
@@ -2193,8 +2247,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba2fdd79fc7ff3b4ebf6db9d5afb0e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveSystem
-  enemyPrefabs:
-  - {fileID: 5988109855496401481, guid: 127906fa018f33d41b37671d6a830318, type: 3}
+  waves:
+  - waveName: Val 1
+    enemyPrefab: {fileID: 5988109855496401481, guid: 127906fa018f33d41b37671d6a830318, type: 3}
+    enemyCount: 30
+    spawnInterval: 3
+    enemySpeedMultiplier: 1
+    weaponType: 
+  - waveName: Val 2
+    enemyPrefab: {fileID: 5988109855496401481, guid: 127906fa018f33d41b37671d6a830318, type: 3}
+    enemyCount: 40
+    spawnInterval: 2.5
+    enemySpeedMultiplier: 1.2
+    weaponType: 
+  - waveName: Val 3
+    enemyPrefab: {fileID: 5988109855496401481, guid: 127906fa018f33d41b37671d6a830318, type: 3}
+    enemyCount: 50
+    spawnInterval: 2
+    enemySpeedMultiplier: 1.5
+    weaponType: 
   spawnPoint: {fileID: 649275333}
   gameManager: {fileID: 1724965156}
 --- !u!1 &410087039
@@ -3081,9 +3152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 20
+  maxHealth: 500
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &565811515
 GameObject:
   m_ObjectHideFlags: 0
@@ -4009,9 +4082,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &723004529
 GameObject:
   m_ObjectHideFlags: 0
@@ -4821,6 +4896,7 @@ Transform:
   - {fileID: 1053619404}
   - {fileID: 1833615231}
   - {fileID: 1426277612}
+  - {fileID: 218981787}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &773910795
@@ -5431,9 +5507,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &868681676
 GameObject:
   m_ObjectHideFlags: 0
@@ -5724,9 +5802,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!4 &923261878 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5785242846073902511, guid: 8c2cabd72c2871e4fa25d9761a86fef5, type: 3}
@@ -7894,9 +7974,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 15
+  maxHealth: 100
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &1327022137
 GameObject:
   m_ObjectHideFlags: 0
@@ -8325,9 +8407,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!4 &1396506567 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5785242846073902511, guid: 8c2cabd72c2871e4fa25d9761a86fef5, type: 3}
@@ -8520,9 +8604,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &1426277610
 GameObject:
   m_ObjectHideFlags: 0
@@ -9023,9 +9109,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &1479998377
 GameObject:
   m_ObjectHideFlags: 0
@@ -9459,9 +9547,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1001 &1568246168
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9564,9 +9654,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1001 &1569252059
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9669,9 +9761,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &1574706210
 GameObject:
   m_ObjectHideFlags: 0
@@ -9834,7 +9928,7 @@ Transform:
   m_GameObject: {fileID: 1604662545}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.50648516, z: -0, w: 0.8622487}
-  m_LocalPosition: {x: 534.082, y: 170.77, z: -9824.242}
+  m_LocalPosition: {x: 534.082, y: 0, z: -9824.242}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10154,9 +10248,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!4 &1661302125 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8107190456209775893, guid: 57ef16ee7712da6409e8836bf6001e3c, type: 3}
@@ -10526,9 +10622,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &1812979125
 GameObject:
   m_ObjectHideFlags: 0
@@ -11175,9 +11273,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &1982169467
 GameObject:
   m_ObjectHideFlags: 0
@@ -11448,9 +11548,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1001 &2024669084
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12471,9 +12573,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 10
+  maxHealth: 50
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &2074637938
 GameObject:
   m_ObjectHideFlags: 0
@@ -12659,9 +12763,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e7b9fa32ae4584da872c81a16edf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 15
+  maxHealth: 100
   currentHealth: 0
-  isTower: 0
+  isTower: 1
+  bloodCirclePrefab: {fileID: 0}
+  bloodCircleDuration: 3
 --- !u!1 &2141565074
 GameObject:
   m_ObjectHideFlags: 0

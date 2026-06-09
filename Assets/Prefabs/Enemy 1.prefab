@@ -21405,6 +21405,7 @@ GameObject:
   - component: {fileID: 3690088748051118350}
   - component: {fileID: -2762695230884077068}
   - component: {fileID: -6291130554044738429}
+  - component: {fileID: 7470719284752328575}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Enemy
@@ -21482,6 +21483,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   currentHealth: 0
+  isTower: 0
+  bloodCirclePrefab: {fileID: 7963325272182396357, guid: dac8e15cccf037f42b763a9ac981699d, type: 3}
+  bloodCircleDuration: 3
 --- !u!195 &-2762695230884077068
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -21517,7 +21521,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   _moveSpeed: 3.5
-  _attackDamage: 10
+  _attackDamage: 5
+  walkingSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  deathVolume: 0.5
+--- !u!114 &7470719284752328575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5988109855496401481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 090d5240208b367418285eacfd839f51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LootSystem
+  coinsReward: 4
 --- !u!1 &6031306231926162411
 GameObject:
   m_ObjectHideFlags: 0

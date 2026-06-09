@@ -30862,6 +30862,7 @@ GameObject:
   - component: {fileID: 7077907549629088561}
   - component: {fileID: 6589965370571412336}
   - component: {fileID: 5703345951454389042}
+  - component: {fileID: 6174786660611362946}
   m_Layer: 0
   m_Name: Enemy 2
   m_TagString: Enemy
@@ -30939,3 +30940,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   currentHealth: 0
+  isTower: 0
+  bloodCirclePrefab: {fileID: 7963325272182396357, guid: dac8e15cccf037f42b763a9ac981699d, type: 3}
+  bloodCircleDuration: 3
+--- !u!114 &6174786660611362946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9201498422394542509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 090d5240208b367418285eacfd839f51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LootSystem
+  coinsReward: 4
