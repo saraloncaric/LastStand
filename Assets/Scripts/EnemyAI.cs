@@ -7,20 +7,28 @@ public class EnemyAI : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 3.5f;
     [SerializeField] float _attackDamage = 10f;
+    [SerializeField] AudioClip walkingSound;
+    [SerializeField] AudioClip deathSound;
+    [SerializeField, Range(0f, 1f)] float deathVolume = 0.5f;
 
     const float GoalReachDistance = 10f;
     const float AttackCooldown = 2f;
 
     NavMeshAgent _agent;
     Health _selfHealth;
+    AudioSource _audioSource;
     Transform _goal;
     float _nextAttackTime;
     bool _deathRewarded;
+    bool _deathHandled;
 
     void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _selfHealth = GetComponent<Health>();
+        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource == null)
+            _audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     void Start()
@@ -28,17 +36,22 @@ public class EnemyAI : MonoBehaviour
         var goalObject = GameObject.FindGameObjectWithTag("Goal");
         if (goalObject != null)
             _goal = goalObject.transform;
+
+        if (walkingSound != null)
+        {
+            _audioSource.clip = walkingSound;
+            _audioSource.loop = true;
+            _audioSource.Play();
+        }
     }
 
     void Update()
     {
         TryGrantDeathReward();
+        HandleDeath();
 
         if (_selfHealth != null && _selfHealth.currentHealth <= 0f)
-        {
-            _agent.isStopped = true;
             return;
-        }
 
         if (_goal == null)
             return;
@@ -61,6 +74,23 @@ public class EnemyAI : MonoBehaviour
             goalHealth.TakeDamage(_attackDamage);
     }
 
+    void HandleDeath()
+    {
+        if (_deathHandled || _selfHealth == null)
+            return;
+        if (_selfHealth.currentHealth > 0f)
+            return;
+
+        _deathHandled = true;
+        _agent.isStopped = true;
+
+        if (_audioSource != null && _audioSource.isPlaying)
+            _audioSource.Stop();
+
+        if (deathSound != null)
+            AudioSource.PlayClipAtPoint(deathSound, transform.position, deathVolume);
+    }
+
     void TryGrantDeathReward()
     {
         if (_deathRewarded || _selfHealth == null)
@@ -69,7 +99,9 @@ public class EnemyAI : MonoBehaviour
             return;
 
         _deathRewarded = true;
-        if (EconomyManager.Instance != null)
-            EconomyManager.Instance.EnemyKilled();
+
+        var loot = GetComponent<LootSystem>();
+        if (loot != null)
+            loot.GiveLoot();
     }
 }
