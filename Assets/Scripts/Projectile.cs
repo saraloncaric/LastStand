@@ -1,107 +1,22 @@
 using UnityEngine;
 
-public class SoldierAI : MonoBehaviour
-
+public class Projectile : MonoBehaviour
 {
-
-    public GameObject projectilePrefab;
-
-    public Transform firePoint;
-
-    public float detectionRange = 15f;
-
-    private WeaponStats stats;
-
-    private float fireCooldown = 0f;
-
-    void Start()
-
-    {
-
-        stats = GetComponent();
-
-    }
+    public float damage = 20f;
+    public float speed = 15f;
 
     void Update()
-
     {
-
-        GameObject target = FindClosestEnemy();
-
-        if (target == null) return;
-
-        // okreni se prema neprijatelju
-
-        transform.LookAt(target.transform);
-
-        // pucaj
-
-        fireCooldown -= Time.deltaTime;
-
-        if (fireCooldown <= 0f)
-
-        {
-
-            Shoot(target);
-
-            fireCooldown = stats.fireRate;
-
-        }
-
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
-    GameObject FindClosestEnemy()
-
+    void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Soldier")) return;
+        Health health = other.GetComponent<Health>();
+        if (health != null)
+            health.TakeDamage(damage);
 
-        GameObject\[\] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        GameObject closest = null;
-
-        float minDist = detectionRange;
-
-        foreach (GameObject enemy in enemies)
-
-        {
-
-            float dist = Vector3.Distance(transform.position, enemy.transform.position);
-
-            if (dist < minDist)
-
-            {
-
-                minDist = dist;
-
-                closest = enemy;
-
-            }
-
-        }
-
-        return closest;
-
+        Destroy(gameObject);
     }
-
-    void Shoot(GameObject target)
-
-    {
-
-        if (projectilePrefab == null || firePoint == null) return;
-
-        GameObject proj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-
-        Projectile p = proj.GetComponent();
-
-        if (p != null)
-
-        {
-
-            p.damage = stats.damage;
-
-            p.speed = stats.projectileSpeed;
-
-        }
-
-    }
-
 }

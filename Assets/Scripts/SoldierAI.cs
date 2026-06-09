@@ -1,107 +1,101 @@
 using UnityEngine;
 
 public class SoldierAI : MonoBehaviour
-
 {
-
-    public GameObject projectilePrefab;
-
+    [Header("Referenca")]
     public Transform firePoint;
-
     public float detectionRange = 15f;
 
-    private WeaponStats stats;
+    [Header("Zvuk i animacija")]
+    public AudioClip attackSound;
+    public string attackAnimTrigger = "Attack";
 
+    private WeaponStats weaponStats;
     private float fireCooldown = 0f;
+    private AudioSource audioSource;
+    private Animator animator;
 
     void Start()
-
     {
+        weaponStats = GetComponent<WeaponStats>();
+        audioSource = GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
+        if (weaponStats != null)
+            GameManager.OnWaveChanged += weaponStats.SetWave;
+    }
 
-        stats = GetComponent();
-
+    void OnDestroy()
+    {
+        if (weaponStats != null)
+            GameManager.OnWaveChanged -= weaponStats.SetWave;
     }
 
     void Update()
-
     {
-
+        if (weaponStats == null) return;
         GameObject target = FindClosestEnemy();
-
         if (target == null) return;
-
-        // okreni se prema neprijatelju
 
         transform.LookAt(target.transform);
 
-        // pucaj
-
         fireCooldown -= Time.deltaTime;
-
         if (fireCooldown <= 0f)
-
         {
-
-            Shoot(target);
-
-            fireCooldown = stats.fireRate;
-
+            Attack(target);
+            fireCooldown = weaponStats.fireRate;
         }
-
     }
 
-    GameObject FindClosestEnemy()
-
+    void Attack(GameObject target)
     {
+        if (animator != null)
+            animator.SetTrigger(attackAnimTrigger);
+        if (audioSource != null && attackSound != null)
+            audioSource.PlayOneShot(attackSound);
 
-        GameObject\[\] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        GameObject closest = null;
-
-        float minDist = detectionRange;
-
-        foreach (GameObject enemy in enemies)
-
+        if (weaponStats.isMelee)
         {
-
-            float dist = Vector3.Distance(transform.position, enemy.transform.position);
-
-            if (dist < minDist)
-
+            float dist = Vector3.Distance(transform.position, target.transform.position);
+            if (dist <= weaponStats.meleeRange)
             {
-
-                minDist = dist;
-
-                closest = enemy;
-
+                Health health = target.GetComponent<Health>();
+                if (health != null)
+                    health.TakeDamage(weaponStats.damage);
             }
-
         }
-
-        return closest;
-
+        else
+        {
+            Shoot(target);
+        }
     }
 
     void Shoot(GameObject target)
-
     {
-
-        if (projectilePrefab == null || firePoint == null) return;
-
-        GameObject proj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-
-        Projectile p = proj.GetComponent();
-
+        if (weaponStats.projectilePrefab == null || firePoint == null) return;
+        GameObject proj = Instantiate(weaponStats.projectilePrefab, firePoint.position, firePoint.rotation);
+        Projectile p = proj.GetComponent<Projectile>();
         if (p != null)
-
         {
-
-            p.damage = stats.damage;
-
-            p.speed = stats.projectileSpeed;
-
+            p.damage = weaponStats.damage;
+            p.speed = weaponStats.projectileSpeed;
         }
-
     }
 
+    GameObject FindClosestEnemy()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject closest = null;
+        float minDist = detectionRange;
+
+        foreach (GameObject enemy in enemies)
+        {
+            float dist = Vector3.Distance(transform.position, enemy.transform.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closest = enemy;
+            }
+        }
+        return closest;
+    }
 }
