@@ -19,10 +19,17 @@ public class EconomyManager : MonoBehaviour
         if (Instance == this)
             Instance = null;
     }
-    public void EnemyKilled() {
-        coins += 4;
-        Debug.Log("Zaradio si 4 coinsa! Trenutno stanje coinsa: " + coins);
+
+    public void AddCoins(int amount) {
+        if (amount <= 0) return;
+        coins += amount;
+        Debug.Log("Zaradio si " + amount + " coinsa! Trenutno stanje coinsa: " + coins);
     }
+
+    public void EnemyKilled() {
+        AddCoins(5);
+    }
+
     public bool TryRepair() {
         if(coins >= 4) {
             coins -= 4;

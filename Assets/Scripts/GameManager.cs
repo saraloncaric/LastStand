@@ -63,4 +63,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Over!");
         uiManager.PrikaziGameOver();
     }
+
+    public void PreskociFazu() {
+        if (trenutnafaza == GamePhase.GameOver) return;
+        SljedecaFaza();
+    }
 }

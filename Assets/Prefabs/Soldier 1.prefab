@@ -10196,8 +10196,8 @@ GameObject:
   - component: {fileID: 5589190421355726736}
   - component: {fileID: 8003838784271716793}
   m_Layer: 0
-  m_Name: Soldier
-  m_TagString: Soldier
+  m_Name: Soldier 1
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10273,9 +10273,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   currentHealth: 0
-  isTower: 0
-  bloodCirclePrefab: {fileID: 7963325272182396357, guid: dac8e15cccf037f42b763a9ac981699d, type: 3}
-  bloodCircleDuration: 3
 --- !u!114 &5589190421355726736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10288,14 +10285,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07a982491ce08a4a8d95eaa5cb6b518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoldierAI
+  projectilePrefab: {fileID: 5354562596282687935, guid: 6e2afa6083c57ff41b26e95c4683d47e, type: 3}
   firePoint: {fileID: 2938904692064412953}
-  detectionRange: 40
-  bowPrefab: {fileID: 3317823749142253822, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
-  bowLocalPosition: {x: 0.15, y: 1.05, z: 0.25}
-  bowLocalEuler: {x: 0, y: -90, z: 0}
-  bowScale: 0.75
-  attackSound: {fileID: 8300000, guid: 7c6041f0c73240840bf4f4e50a46d83b, type: 3}
-  attackAnimTrigger: Attack
+  detectionRange: 80
 --- !u!114 &8003838784271716793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10308,17 +10300,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09bb4ecdc1dec1a489eb378e92bfde6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponStats
-  w1_damage: 20
-  w1_projectileSpeed: 28
-  w1_fireRate: 0.85
-  w1_projectilePrefab: {fileID: 5354562596282687935, guid: 6e2afa6083c57ff41b26e95c4683d47e, type: 3}
-  bloodCirclePrefab: {fileID: 7963325272182396357, guid: dac8e15cccf037f42b763a9ac981699d, type: 3}
   damage: 20
-  projectileSpeed: 28
-  fireRate: 0.85
-  meleeRange: 0
-  isMelee: 0
-  projectilePrefab: {fileID: 0}
+  projectileSpeed: 15
+  fireRate: 1.5
 --- !u!1 &3015257503169294250
 GameObject:
   m_ObjectHideFlags: 0
@@ -19363,13 +19347,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6084019148627297316}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.25, y: 1.2, z: 0.4}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 1118.309, y: 170.77, z: 570}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1744685226276520465}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &6084906810158462016
 GameObject:
   m_ObjectHideFlags: 0

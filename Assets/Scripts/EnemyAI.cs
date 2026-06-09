@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 3.5f;
-    [SerializeField] float _attackDamage = 10f;
+    [SerializeField] float _attackDamage = 8f;
     [SerializeField] AudioClip walkingSound;
     [SerializeField] AudioClip deathSound;
     [SerializeField, Range(0f, 1f)] float deathVolume = 0.5f;
@@ -14,21 +14,40 @@ public class EnemyAI : MonoBehaviour
     const float GoalReachDistance = 10f;
     const float AttackCooldown = 2f;
 
+    [SerializeField] float spawnTargetDelay = 1.5f;
+
     NavMeshAgent _agent;
     Health _selfHealth;
     AudioSource _audioSource;
     Transform _goal;
     float _nextAttackTime;
-    bool _deathRewarded;
     bool _deathHandled;
+    float _spawnedAt;
+
+    public bool IsTargetable => Time.time >= _spawnedAt + spawnTargetDelay;
 
     void Awake()
     {
+        _spawnedAt = Time.time;
         _agent = GetComponent<NavMeshAgent>();
         _selfHealth = GetComponent<Health>();
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
             _audioSource = gameObject.AddComponent<AudioSource>();
+
+        EnsureHitCollider();
+    }
+
+    void EnsureHitCollider()
+    {
+        if (GetComponent<Collider>() != null)
+            return;
+
+        var capsule = gameObject.AddComponent<CapsuleCollider>();
+        capsule.radius = _agent.radius;
+        capsule.height = _agent.height;
+        capsule.center = new Vector3(0f, _agent.height * 0.5f, 0f);
+        capsule.isTrigger = false;
     }
 
     void Start()
@@ -47,7 +66,6 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        TryGrantDeathReward();
         HandleDeath();
 
         if (_selfHealth != null && _selfHealth.currentHealth <= 0f)
@@ -91,17 +109,4 @@ public class EnemyAI : MonoBehaviour
             AudioSource.PlayClipAtPoint(deathSound, transform.position, deathVolume);
     }
 
-    void TryGrantDeathReward()
-    {
-        if (_deathRewarded || _selfHealth == null)
-            return;
-        if (_selfHealth.currentHealth > 0f)
-            return;
-
-        _deathRewarded = true;
-
-        var loot = GetComponent<LootSystem>();
-        if (loot != null)
-            loot.GiveLoot();
-    }
 }

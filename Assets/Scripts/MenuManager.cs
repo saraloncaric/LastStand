@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class MenuManager : MonoBehaviour
 {
@@ -7,26 +7,65 @@ public class MenuManager : MonoBehaviour
     public PanelNavigacija panelNavigacija;
     public GameManager gameManager;
 
-    void Start() {
-        menuPanel.SetActive(false);
+    void Start()
+    {
+        if (menuPanel != null)
+            menuPanel.SetActive(false);
     }
 
-    public void ToggleMenu() {
-        bool trebaOtvoriti = !menuPanel.activeSelf;
-        menuPanel.SetActive(trebaOtvoriti);
+    void Update()
+    {
+        if (menuPanel == null || !menuPanel.activeSelf)
+            return;
 
-        if (trebaOtvoriti) {
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            CloseMenu();
+    }
+
+    public void ToggleMenu()
+    {
+        if (menuPanel != null && menuPanel.activeSelf)
+            CloseMenu();
+        else
+            OpenMenu();
+    }
+
+    public void CloseMenu()
+    {
+        ZatvoriMeni();
+    }
+
+    public void ZatvoriMeni()
+    {
+        if (panelNavigacija != null)
             panelNavigacija.PrikaziGlavniMeni();
-            if (gameManager.trenutnafaza == GameManager.GamePhase.Val)
-                Time.timeScale = 0f;
-        }
-        else {
-            Time.timeScale = 1f;
-        }
+
+        if (menuPanel != null)
+            menuPanel.SetActive(false);
+
+        Time.timeScale = 1f;
+        SetSkipButtonVisible(true);
     }
 
-    public void ZatvoriMeni() {
-        menuPanel.SetActive(false);
-        Time.timeScale = 1f;
+    void OpenMenu()
+    {
+        if (menuPanel == null)
+            return;
+
+        menuPanel.SetActive(true);
+
+        if (panelNavigacija != null)
+            panelNavigacija.PrikaziGlavniMeni();
+
+        if (gameManager != null && gameManager.trenutnafaza == GameManager.GamePhase.Val)
+            Time.timeScale = 0f;
+
+        SetSkipButtonVisible(false);
+    }
+
+    void SetSkipButtonVisible(bool visible)
+    {
+        if (gameManager != null && gameManager.uiManager != null)
+            gameManager.uiManager.SetSkipButtonVisible(visible);
     }
 }

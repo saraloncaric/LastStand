@@ -10,6 +10,8 @@ public class Health : MonoBehaviour
     public GameObject bloodCirclePrefab;
     public float bloodCircleDuration = 3f;
 
+    bool _rewardGranted;
+
     void Awake()
     {
         currentHealth = maxHealth;
@@ -28,10 +30,29 @@ public class Health : MonoBehaviour
             }
             else
             {
+                GrantDeathReward();
                 SpawnBloodCircle();
                 Destroy(gameObject);
             }
         }
+    }
+
+    void GrantDeathReward()
+    {
+        if (_rewardGranted)
+            return;
+
+        _rewardGranted = true;
+
+        LootSystem loot = GetComponent<LootSystem>();
+        if (loot != null)
+        {
+            loot.GiveLoot();
+            return;
+        }
+
+        if (EconomyManager.Instance != null)
+            EconomyManager.Instance.EnemyKilled();
     }
 
     void SpawnBloodCircle()

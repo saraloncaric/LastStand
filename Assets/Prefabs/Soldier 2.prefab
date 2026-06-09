@@ -23925,7 +23925,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoldierAI
   firePoint: {fileID: 6533118722407950785}
-  detectionRange: 15
+  detectionRange: 80
   attackSound: {fileID: 8300000, guid: 7c6041f0c73240840bf4f4e50a46d83b, type: 3}
   attackAnimTrigger: Attack
 --- !u!114 &2562243681935028403

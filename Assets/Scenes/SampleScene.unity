@@ -2250,20 +2250,20 @@ MonoBehaviour:
   waves:
   - waveName: Val 1
     enemyPrefab: {fileID: 5988109855496401481, guid: 127906fa018f33d41b37671d6a830318, type: 3}
-    enemyCount: 30
-    spawnInterval: 3
+    enemyCount: 15
+    spawnInterval: 4
     enemySpeedMultiplier: 1
     weaponType: 
   - waveName: Val 2
     enemyPrefab: {fileID: 5988109855496401481, guid: 127906fa018f33d41b37671d6a830318, type: 3}
-    enemyCount: 40
-    spawnInterval: 2.5
+    enemyCount: 22
+    spawnInterval: 3.5
     enemySpeedMultiplier: 1.2
     weaponType: 
   - waveName: Val 3
     enemyPrefab: {fileID: 5988109855496401481, guid: 127906fa018f33d41b37671d6a830318, type: 3}
-    enemyCount: 50
-    spawnInterval: 2
+    enemyCount: 30
+    spawnInterval: 3
     enemySpeedMultiplier: 1.5
     weaponType: 
   spawnPoint: {fileID: 649275333}

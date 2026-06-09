@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class LootSystem : MonoBehaviour
 {
-    [SerializeField] int coinsReward = 4;
+    [SerializeField] int coinsReward = 5;
 
     public void GiveLoot()
     {
         if (EconomyManager.Instance == null)
             return;
 
-        EconomyManager.Instance.coins += coinsReward;
+        EconomyManager.Instance.AddCoins(coinsReward);
     }
 }
