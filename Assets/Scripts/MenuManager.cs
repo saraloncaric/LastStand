@@ -5,6 +5,7 @@ public class MenuManager : MonoBehaviour
 {
     public GameObject menuPanel;
     public PanelNavigacija panelNavigacija;
+    public GameManager gameManager;
 
     void Start() {
         menuPanel.SetActive(false);
@@ -16,10 +17,11 @@ public class MenuManager : MonoBehaviour
 
         if (trebaOtvoriti) {
             panelNavigacija.PrikaziGlavniMeni();
-            Time.timeScale = 0f; 
+            if (gameManager.trenutnafaza == GameManager.GamePhase.Val)
+                Time.timeScale = 0f;
         }
         else {
-            Time.timeScale = 1f; 
+            Time.timeScale = 1f;
         }
     }
 
