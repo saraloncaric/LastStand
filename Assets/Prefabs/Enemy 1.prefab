@@ -21522,9 +21522,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   _moveSpeed: 3.5
   _attackDamage: 5
-  walkingSound: {fileID: 0}
-  deathSound: {fileID: 0}
-  deathVolume: 0.5
+  walkSound:
+    clip: {fileID: 8300000, guid: f885a3739417ca64fa3ec4a13f74f76f, type: 3}
+    volume: 1
+    spatialBlend: 1
+    minDistance: 2
+    maxDistance: 30
+    loop: 0
+  deathSound:
+    clip: {fileID: 8300000, guid: 1e0450c14764e3c40bd3e363a8eba9f6, type: 3}
+    volume: 1
+    spatialBlend: 1
+    minDistance: 2
+    maxDistance: 30
+    loop: 0
+  attackSound:
+    clip: {fileID: 8300000, guid: 9bba43f8612495640bb7701defb2de6c, type: 3}
+    volume: 1
+    spatialBlend: 1
+    minDistance: 2
+    maxDistance: 30
+    loop: 0
+  spawnTargetDelay: 1.5
 --- !u!114 &7470719284752328575
 MonoBehaviour:
   m_ObjectHideFlags: 0

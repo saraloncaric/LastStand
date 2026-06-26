@@ -7,12 +7,15 @@ public class EnemyAI : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 3.5f;
     [SerializeField] float _attackDamage = 8f;
-    [SerializeField] AudioClip walkingSound;
-    [SerializeField] AudioClip deathSound;
-    [SerializeField, Range(0f, 1f)] float deathVolume = 0.5f;
+
+    [Header("Sounds")]
+    [SerializeField] SpatialSound walkSound;
+    [SerializeField] SpatialSound deathSound;
+    [SerializeField] SpatialSound attackSound;
 
     const float GoalReachDistance = 10f;
     const float AttackCooldown = 2f;
+    const float WalkVelocityThreshold = 0.15f;
 
     [SerializeField] float spawnTargetDelay = 1.5f;
 
@@ -55,13 +58,6 @@ public class EnemyAI : MonoBehaviour
         var goalObject = GameObject.FindGameObjectWithTag("Goal");
         if (goalObject != null)
             _goal = goalObject.transform;
-
-        if (walkingSound != null)
-        {
-            _audioSource.clip = walkingSound;
-            _audioSource.loop = true;
-            _audioSource.Play();
-        }
     }
 
     void Update()
@@ -71,7 +67,12 @@ public class EnemyAI : MonoBehaviour
         if (_selfHealth != null && _selfHealth.currentHealth <= 0f)
             return;
 
+        UpdateWalkSound();
+
         if (_goal == null)
+            return;
+
+        if (_agent == null || !_agent.isOnNavMesh)
             return;
 
         _agent.isStopped = false;
@@ -89,7 +90,23 @@ public class EnemyAI : MonoBehaviour
 
         var goalHealth = _goal.GetComponent<Health>();
         if (goalHealth != null)
+        {
             goalHealth.TakeDamage(_attackDamage);
+            GameAudio.PlayOneShot(_audioSource, attackSound);
+        }
+    }
+
+    void UpdateWalkSound()
+    {
+        if (!walkSound.IsValid)
+            return;
+
+        bool isMoving = !_agent.isStopped && _agent.velocity.sqrMagnitude > WalkVelocityThreshold * WalkVelocityThreshold;
+
+        if (isMoving)
+            GameAudio.PlayLoop(_audioSource, walkSound);
+        else
+            GameAudio.StopLoop(_audioSource);
     }
 
     void HandleDeath()
@@ -101,12 +118,8 @@ public class EnemyAI : MonoBehaviour
 
         _deathHandled = true;
         _agent.isStopped = true;
+        GameAudio.StopLoop(_audioSource);
 
-        if (_audioSource != null && _audioSource.isPlaying)
-            _audioSource.Stop();
-
-        if (deathSound != null)
-            AudioSource.PlayClipAtPoint(deathSound, transform.position, deathVolume);
+        GameAudio.PlayAtPoint(deathSound, transform.position);
     }
-
 }

@@ -30863,6 +30863,8 @@ GameObject:
   - component: {fileID: 6589965370571412336}
   - component: {fileID: 5703345951454389042}
   - component: {fileID: 6174786660611362946}
+  - component: {fileID: 5178229370863570375}
+  - component: {fileID: 7707833231654848171}
   m_Layer: 0
   m_Name: Enemy 2
   m_TagString: Enemy
@@ -30956,3 +30958,61 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LootSystem
   coinsReward: 5
+--- !u!195 &5178229370863570375
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9201498422394542509}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &7707833231654848171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9201498422394542509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abfe42019f949b5409af86ea14e7486c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  _moveSpeed: 3.5
+  _attackDamage: 8
+  walkSound:
+    clip: {fileID: 8300000, guid: f885a3739417ca64fa3ec4a13f74f76f, type: 3}
+    volume: 1
+    spatialBlend: 1
+    minDistance: 2
+    maxDistance: 30
+    loop: 0
+  deathSound:
+    clip: {fileID: 8300000, guid: 1e0450c14764e3c40bd3e363a8eba9f6, type: 3}
+    volume: 1
+    spatialBlend: 1
+    minDistance: 2
+    maxDistance: 30
+    loop: 0
+  attackSound:
+    clip: {fileID: 8300000, guid: 9bba43f8612495640bb7701defb2de6c, type: 3}
+    volume: 1
+    spatialBlend: 1
+    minDistance: 2
+    maxDistance: 30
+    loop: 0
+  spawnTargetDelay: 1.5

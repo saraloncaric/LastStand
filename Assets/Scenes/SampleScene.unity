@@ -245,7 +245,7 @@ Transform:
   m_GameObject: {fileID: 26376210}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 354.38202, y: 104.49999, z: -9851.072}
+  m_LocalPosition: {x: 449.23, y: 145, z: -9829.123}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1475,6 +1475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 218981787}
   - component: {fileID: 218981788}
+  - component: {fileID: 218981789}
   m_Layer: 0
   m_Name: MusicManager
   m_TagString: Untagged
@@ -1513,6 +1514,20 @@ MonoBehaviour:
   waveMusic: {fileID: 8300000, guid: 77b16e2259804cd4e97ab30feb14e63e, type: 3}
   volume: 0.5
   fadeDuration: 1.5
+--- !u!114 &218981789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218981786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5f0e4a3d6f7890123456abcdef03c4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioSettingsManager
+  sfxVolume: 1
+  musicVolume: 0.5
 --- !u!1 &240736554
 GameObject:
   m_ObjectHideFlags: 0
@@ -2163,10 +2178,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   moveSpeed: 20
-  zoomSpeed: 5
-  minZoom: 10
-  maxZoom: 80
   edgeScrollSize: 20
+  edgeScrollEnabled: 1
+  zoomSpeed: 5
+  minHeight: 40
+  maxHeight: 350
+  rotateSpeed: 120
+  minPitch: 25
+  maxPitch: 80
 --- !u!1 &354896755
 GameObject:
   m_ObjectHideFlags: 0
@@ -2266,7 +2285,14 @@ MonoBehaviour:
     spawnInterval: 3
     enemySpeedMultiplier: 1.5
     weaponType: 
-  spawnPoint: {fileID: 649275333}
+  spawnPoints:
+  - {fileID: 649275333}
+  - {fileID: 2062238662}
+  - {fileID: 26376211}
+  - {fileID: 700000002}
+  - {fileID: 700000004}
+  spawnRadius: 6
+  navMeshSampleDistance: 4
   gameManager: {fileID: 1724965156}
 --- !u!1 &410087039
 GameObject:
@@ -3699,7 +3725,7 @@ Transform:
   m_GameObject: {fileID: 649275332}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 474.68195, y: 148.28699, z: -9867.203}
+  m_LocalPosition: {x: 474.68195, y: 147.37, z: -9867.203}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4007,7 +4033,71 @@ Transform:
   - {fileID: 649275333}
   - {fileID: 2062238662}
   - {fileID: 26376211}
+  - {fileID: 700000002}
+  - {fileID: 700000004}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &700000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 700000002}
+  m_Layer: 0
+  m_Name: EnemySpawn - strogo lijevo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &700000002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700000001}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 509.662, y: 149.1, z: -9902.639}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 697615191}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &700000003
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 700000004}
+  m_Layer: 0
+  m_Name: EnemySpawn - strogo desno
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &700000004
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700000003}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 505.82, y: 160.5, z: -9752.19}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 697615191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &703471743
 PrefabInstance:
@@ -5711,6 +5801,7 @@ MonoBehaviour:
   menuPanel: {fileID: 165444608}
   panelNavigacija: {fileID: 1833615230}
   gameManager: {fileID: 1724965156}
+  meniButton: {fileID: 0}
 --- !u!4 &868681678
 Transform:
   m_ObjectHideFlags: 0
@@ -9303,7 +9394,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1479998378
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10967,8 +11058,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PanelNavigacija
   glavniMeniPanel: {fileID: 832974344}
   healthPanel: {fileID: 2074637938}
-  lokacijePanel: {fileID: 1188453310}
+  lokacijePanel: {fileID: 0}
   vojniciPanel: {fileID: 1188453310}
+  zatvoriButton: {fileID: 295635278}
+  staraStrelica: {fileID: 725899636}
 --- !u!4 &1833615231
 Transform:
   m_ObjectHideFlags: 0
@@ -12722,7 +12815,7 @@ Transform:
   m_GameObject: {fileID: 2062238661}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 448.742, y: 145.19998, z: -9787.173}
+  m_LocalPosition: {x: 448.742, y: 147.5, z: -9787.173}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12835,7 +12928,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1.5500183, y: -24.550007}
+  m_AnchoredPosition: {x: -1.5500488, y: -24.550018}
   m_SizeDelta: {x: 0.3000276, y: -49.099987}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &2112843355

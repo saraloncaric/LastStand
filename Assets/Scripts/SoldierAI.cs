@@ -14,7 +14,7 @@ public class SoldierAI : MonoBehaviour
     public float bowScale = 0.75f;
 
     [Header("Zvuk i animacija")]
-    public AudioClip attackSound;
+    public SpatialSound attackSound;
     public string attackAnimTrigger = "Attack";
 
     static readonly Vector3 DefaultFirePointLocal = new Vector3(0.25f, 1.2f, 0.4f);
@@ -121,8 +121,7 @@ public class SoldierAI : MonoBehaviour
 
         if (animator != null && animator.runtimeAnimatorController != null)
             animator.SetTrigger(attackAnimTrigger);
-        if (audioSource != null && attackSound != null)
-            audioSource.PlayOneShot(attackSound);
+        GameAudio.PlayOneShot(audioSource, attackSound);
 
         Shoot(target);
     }

@@ -29,7 +29,7 @@ public class MusicManager : MonoBehaviour
 
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.loop = true;
-        audioSource.volume = volume;
+        audioSource.volume = GameAudio.GetEffectiveMusicVolume(volume);
     }
 
     void Start()
@@ -70,6 +70,7 @@ public class MusicManager : MonoBehaviour
     {
         fading = true;
 
+        float targetVolume = GameAudio.GetEffectiveMusicVolume(volume);
         float startVolume = audioSource.volume;
         float t = 0f;
 
@@ -89,11 +90,11 @@ public class MusicManager : MonoBehaviour
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(0f, volume, t / fadeDuration);
+            audioSource.volume = Mathf.Lerp(0f, targetVolume, t / fadeDuration);
             yield return null;
         }
 
-        audioSource.volume = volume;
+        audioSource.volume = GameAudio.GetEffectiveMusicVolume(volume);
         fading = false;
     }
 }
