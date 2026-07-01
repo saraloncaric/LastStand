@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
     public int trenutniVal = 0;
     public float timer = 0f;
 
+    static readonly float FirstPrepDuration = 180f;
+    static readonly float PrepDuration = 300f;
+    static readonly float[] WaveDurations = { 300f, 420f, 600f };
+
     public static event Action<int> OnWaveChanged;
     public static event Action OnPreparePhase;
 
@@ -20,41 +24,60 @@ public class GameManager : MonoBehaviour
 
     void Start() {
         trenutnafaza = GamePhase.Priprema;
-        timer = 180f; 
+        timer = FirstPrepDuration;
         Debug.Log("Priprema počinje!");
     }
 
     void Update() {
-        if (trenutnafaza == GamePhase.GameOver) return;
+        if (trenutnafaza == GamePhase.GameOver)
+            return;
 
-        timer -= Time.deltaTime;
-        if (timer <= 0f)
-            SljedecaFaza();
+        if (trenutnafaza == GamePhase.Priprema) {
+            timer -= Time.deltaTime;
+            if (timer <= 0f)
+                PocniVal();
+            return;
+        }
+
+        if (trenutnafaza == GamePhase.Val) {
+            timer -= Time.deltaTime;
+            if (timer <= 0f)
+                ZavrsiVal();
+        }
     }
 
-    void SljedecaFaza() {
-        if (trenutnafaza == GamePhase.Priprema) {
-            trenutniVal++;
-            trenutnafaza = GamePhase.Val;
+    void PocniVal() {
+        if (trenutnafaza != GamePhase.Priprema)
+            return;
 
-            OnWaveChanged?.Invoke(trenutniVal);
+        trenutniVal++;
+        trenutnafaza = GamePhase.Val;
+        timer = GetWaveDuration(trenutniVal);
 
-            if (trenutniVal == 1) timer = 300f;      
-            else if (trenutniVal == 2) timer = 420f; 
-            else if (trenutniVal == 3) timer = 600f; 
+        OnWaveChanged?.Invoke(trenutniVal);
+        Debug.Log("Val " + trenutniVal + " počinje!");
+    }
+
+    static float GetWaveDuration(int wave)
+    {
+        if (wave < 1 || wave > WaveDurations.Length)
+            return WaveDurations[0];
+        return WaveDurations[wave - 1];
+    }
+
+    public void ZavrsiVal() {
+        if (trenutnafaza != GamePhase.Val)
+            return;
+
+        if (trenutniVal >= 3) {
+            TriggerGameOver();
+            return;
         }
-        else if (trenutnafaza == GamePhase.Val) {
-            if (trenutniVal == 3) {
-                TriggerGameOver(); 
-                return;
-            }
 
-            trenutnafaza = GamePhase.Priprema;
-
-            OnPreparePhase?.Invoke();
-
-            timer = 300f; 
-        }
+        trenutnafaza = GamePhase.Priprema;
+        timer = PrepDuration;
+        OnPreparePhase?.Invoke();
+        Debug.Log("Priprema nakon vala " + trenutniVal);
     }
 
     public void TriggerGameOver() {
@@ -65,7 +88,11 @@ public class GameManager : MonoBehaviour
     }
 
     public void PreskociFazu() {
-        if (trenutnafaza == GamePhase.GameOver) return;
-        SljedecaFaza();
+        if (trenutnafaza == GamePhase.GameOver)
+            return;
+        if (trenutnafaza == GamePhase.Val)
+            return;
+
+        PocniVal();
     }
 }

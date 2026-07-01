@@ -5,7 +5,13 @@ public class SoldierAI : MonoBehaviour
 {
     [Header("Referenca")]
     public Transform firePoint;
-    public float detectionRange = 40f;
+    public float optimalRange = 36f;
+    public float detectionRange = 68f;
+
+    [Header("Preciznost na daljinu")]
+    [Range(0f, 1f)] public float minHitChanceAtMaxRange = 0.35f;
+    [Range(1f, 15f)] public float missSpreadMinDegrees = 4f;
+    [Range(1f, 20f)] public float missSpreadMaxDegrees = 11f;
 
     [Header("Luk")]
     public GameObject bowPrefab;
@@ -20,31 +26,60 @@ public class SoldierAI : MonoBehaviour
     static readonly Vector3 DefaultFirePointLocal = new Vector3(0.25f, 1.2f, 0.4f);
 
     WeaponStats weaponStats;
+    float _baseOptimalRange;
+    float _baseMaxRange;
+    float _optimalRange;
+    float _maxRange;
+    bool _isChief;
     float fireCooldown;
     AudioSource audioSource;
     Animator animator;
-    Transform goalTransform;
+
+    void Awake()
+    {
+        _baseOptimalRange = optimalRange;
+        _baseMaxRange = detectionRange;
+        ApplyRangeModifiers();
+    }
+
+    public void ApplyRoleModifiers(bool chief)
+    {
+        _isChief = chief;
+        ApplyRangeModifiers();
+    }
+
+    void ApplyRangeModifiers()
+    {
+        float roleMult = _isChief ? 1.2f : 0.9f;
+        _optimalRange = _baseOptimalRange * roleMult;
+        _maxRange = _baseMaxRange * roleMult;
+    }
 
     void Start()
     {
         weaponStats = GetComponent<WeaponStats>();
         audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
         animator = GetComponent<Animator>();
         if (weaponStats != null)
-            GameManager.OnWaveChanged += weaponStats.SetWave;
-
-        GameObject goal = GameObject.FindGameObjectWithTag("Goal");
-        if (goal != null)
-            goalTransform = goal.transform;
+            GameManager.OnWaveChanged += OnWaveChanged;
 
         EnsureFirePoint();
         EquipBow();
     }
 
+    void OnWaveChanged(int wave)
+    {
+        if (weaponStats == null)
+            return;
+        weaponStats.SetWave(wave);
+        weaponStats.ApplyRoleModifiers(_isChief);
+    }
+
     void OnDestroy()
     {
-        if (weaponStats != null)
-            GameManager.OnWaveChanged -= weaponStats.SetWave;
+        GameManager.OnWaveChanged -= OnWaveChanged;
     }
 
     void EnsureFirePoint()
@@ -121,7 +156,9 @@ public class SoldierAI : MonoBehaviour
 
         if (animator != null && animator.runtimeAnimatorController != null)
             animator.SetTrigger(attackAnimTrigger);
-        GameAudio.PlayOneShot(audioSource, attackSound);
+
+        if (attackSound != null && attackSound.IsValid)
+            GameAudio.PlayOneShot(audioSource, attackSound, SfxCategory.SoldierAttack);
 
         Shoot(target);
     }
@@ -132,15 +169,24 @@ public class SoldierAI : MonoBehaviour
         if (!IsValidTarget(target) || !IsInRange(target)) return;
 
         EnsureFirePoint();
-        AimAtTarget(target.transform);
 
-        Health health = target.GetComponent<Health>();
-        if (health != null)
-            health.TakeDamage(weaponStats.damage);
+        float distance = FlatDistance(transform.position, target.transform.position);
+        float hitChance = GetHitChance(distance);
+        bool hit = Random.value <= hitChance;
+
+        Quaternion shotRotation = GetShotRotation(target.transform, distance, hit);
+        ApplyAimRotation(target.transform, shotRotation);
+
+        if (hit)
+        {
+            Health health = target.GetComponent<Health>();
+            if (health != null)
+                health.TakeDamage(weaponStats.damage);
+        }
 
         if (weaponStats.projectilePrefab == null || firePoint == null) return;
 
-        GameObject proj = Instantiate(weaponStats.projectilePrefab, firePoint.position, firePoint.rotation);
+        GameObject proj = Instantiate(weaponStats.projectilePrefab, firePoint.position, shotRotation);
         Projectile projectile = proj.GetComponent<Projectile>();
         if (projectile != null)
         {
@@ -149,12 +195,51 @@ public class SoldierAI : MonoBehaviour
         }
     }
 
+    float GetHitChance(float distance)
+    {
+        if (distance <= _optimalRange)
+            return 1f;
+
+        if (distance >= _maxRange)
+            return 0f;
+
+        float t = (distance - _optimalRange) / (_maxRange - _optimalRange);
+        return Mathf.Lerp(1f, minHitChanceAtMaxRange, t);
+    }
+
+    Quaternion GetShotRotation(Transform target, float distance, bool hit)
+    {
+        Vector3 fireAim = target.position;
+        fireAim.y = firePoint.position.y;
+        Quaternion perfect = Quaternion.LookRotation((fireAim - firePoint.position).normalized);
+
+        if (hit)
+            return perfect;
+
+        float t = Mathf.InverseLerp(_optimalRange, _maxRange, distance);
+        float spread = Mathf.Lerp(missSpreadMinDegrees, missSpreadMaxDegrees, t);
+        return perfect * Quaternion.Euler(
+            Random.Range(-spread, spread),
+            Random.Range(-spread, spread),
+            0f);
+    }
+
+    void ApplyAimRotation(Transform target, Quaternion shotRotation)
+    {
+        Vector3 aimPoint = target.position;
+        aimPoint.y = transform.position.y;
+        transform.rotation = Quaternion.LookRotation((aimPoint - transform.position).normalized);
+
+        if (firePoint != null)
+            firePoint.rotation = shotRotation;
+    }
+
     GameObject FindPriorityTarget()
     {
         var threats = new List<GameObject>();
         var seen = new HashSet<GameObject>();
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRange);
+        Collider[] hits = Physics.OverlapSphere(transform.position, _maxRange);
         foreach (Collider hit in hits)
         {
             GameObject enemy = ResolveEnemy(hit.gameObject);
@@ -178,23 +263,25 @@ public class SoldierAI : MonoBehaviour
         if (threats.Count == 0)
             return null;
 
-        threats.Sort((a, b) => GetThreatScore(a).CompareTo(GetThreatScore(b)));
+        GameObject closest = threats[0];
+        float closestDist = FlatDistance(transform.position, closest.transform.position);
 
-        int pick = Mathf.Abs(transform.GetInstanceID()) % threats.Count;
-        return threats[pick];
-    }
+        for (int i = 1; i < threats.Count; i++)
+        {
+            float dist = FlatDistance(transform.position, threats[i].transform.position);
+            if (dist < closestDist)
+            {
+                closestDist = dist;
+                closest = threats[i];
+            }
+        }
 
-    float GetThreatScore(GameObject enemy)
-    {
-        if (goalTransform != null)
-            return FlatDistance(enemy.transform.position, goalTransform.position);
-
-        return FlatDistance(transform.position, enemy.transform.position);
+        return closest;
     }
 
     bool IsInRange(GameObject enemy)
     {
-        return FlatDistance(transform.position, enemy.transform.position) <= detectionRange;
+        return FlatDistance(transform.position, enemy.transform.position) <= _maxRange;
     }
 
     bool IsValidTarget(GameObject enemy)

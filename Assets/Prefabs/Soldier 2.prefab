@@ -23925,7 +23925,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoldierAI
   firePoint: {fileID: 6533118722407950785}
-  detectionRange: 80
+  detectionRange: 68
+  minHitChanceAtMaxRange: 0.35
+  missSpreadMinDegrees: 4
+  missSpreadMaxDegrees: 11
+  optimalRange: 36
   bowPrefab: {fileID: 0}
   bowLocalPosition: {x: 0.15, y: 1.05, z: 0.25}
   bowLocalEuler: {x: 0, y: -90, z: 0}
@@ -23935,7 +23939,7 @@ MonoBehaviour:
     volume: 1
     spatialBlend: 1
     minDistance: 2
-    maxDistance: 30
+    maxDistance: 70
     loop: 0
   attackAnimTrigger: Attack
 --- !u!114 &2562243681935028403
@@ -23952,7 +23956,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponStats
   w1_damage: 15
   w1_projectileSpeed: 20
-  w1_fireRate: 1.5
+  w1_fireRate: 1.85
   w1_projectilePrefab: {fileID: 5354562596282687935, guid: 6e2afa6083c57ff41b26e95c4683d47e, type: 3}
   bloodCirclePrefab: {fileID: 7963325272182396357, guid: dac8e15cccf037f42b763a9ac981699d, type: 3}
   damage: 20

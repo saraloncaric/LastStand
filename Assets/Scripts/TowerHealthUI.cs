@@ -14,7 +14,8 @@ public class TowerHealthUI : MonoBehaviour
     public TextMeshProUGUI zidText;
 
     public EconomyManager economy;
-    public int cijenaPopravka = 4;
+    public int cijenaPopravka = 50;
+    [Range(0.05f, 1f)] public float healPercent = 0.25f;
 
     void Update() {
         if (glavniToranj != null) {
@@ -32,38 +33,30 @@ public class TowerHealthUI : MonoBehaviour
     }
 
     public void PopraviGlavniToranj() {
-        if (economy.coins < cijenaPopravka) { 
-            Debug.Log("Nema dovoljno coinsa!"); 
-            return; 
-        }
-        economy.coins -= cijenaPopravka;
-        glavniToranj.currentHealth = glavniToranj.maxHealth;
+        TryPartialRepair(glavniToranj);
     }
 
     public void PopraviLijevo() {
-        if (economy.coins < cijenaPopravka) { 
-            Debug.Log("Nema dovoljno coinsa!"); 
-            return; 
-        }
-        economy.coins -= cijenaPopravka;
-        lijeviBocniToranj.currentHealth = lijeviBocniToranj.maxHealth;
+        TryPartialRepair(lijeviBocniToranj);
     }
 
     public void PopraviDesno() {
-        if (economy.coins < cijenaPopravka) { 
-            Debug.Log("Nema dovoljno coinsa!"); 
-            return; 
-        }
-        economy.coins -= cijenaPopravka;
-        desniBocniToranj.currentHealth = desniBocniToranj.maxHealth;
+        TryPartialRepair(desniBocniToranj);
     }
 
     public void PopraviZid() {
-        if (economy.coins < cijenaPopravka) { 
-            Debug.Log("Nema dovoljno coinsa!"); 
-            return; 
-        }
+        TryPartialRepair(zid);
+    }
+
+    void TryPartialRepair(Health target) {
+        if (target == null || economy == null)
+            return;
+        if (target.currentHealth >= target.maxHealth - 0.5f)
+            return;
+        if (economy.coins < cijenaPopravka)
+            return;
+
         economy.coins -= cijenaPopravka;
-        zid.currentHealth = zid.maxHealth;
+        target.currentHealth = Mathf.Min(target.maxHealth, target.currentHealth + target.maxHealth * healPercent);
     }
 }

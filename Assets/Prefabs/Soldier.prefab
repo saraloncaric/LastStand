@@ -10289,12 +10289,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoldierAI
   firePoint: {fileID: 2938904692064412953}
-  detectionRange: 40
+  detectionRange: 68
+  minHitChanceAtMaxRange: 0.35
+  missSpreadMinDegrees: 4
+  missSpreadMaxDegrees: 11
+  optimalRange: 36
   bowPrefab: {fileID: 3317823749142253822, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
   bowLocalPosition: {x: 0.15, y: 1.05, z: 0.25}
   bowLocalEuler: {x: 0, y: -90, z: 0}
   bowScale: 0.75
-  attackSound: {fileID: 8300000, guid: 7c6041f0c73240840bf4f4e50a46d83b, type: 3}
+  attackSound:
+    clip: {fileID: 8300000, guid: 7c6041f0c73240840bf4f4e50a46d83b, type: 3}
+    volume: 1
+    spatialBlend: 1
+    minDistance: 2
+    maxDistance: 70
+    loop: 0
   attackAnimTrigger: Attack
 --- !u!114 &8003838784271716793
 MonoBehaviour:
@@ -10310,12 +10320,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponStats
   w1_damage: 20
   w1_projectileSpeed: 28
-  w1_fireRate: 0.85
+  w1_fireRate: 1.05
   w1_projectilePrefab: {fileID: 5354562596282687935, guid: 6e2afa6083c57ff41b26e95c4683d47e, type: 3}
   bloodCirclePrefab: {fileID: 7963325272182396357, guid: dac8e15cccf037f42b763a9ac981699d, type: 3}
   damage: 20
   projectileSpeed: 28
-  fireRate: 0.85
+  fireRate: 1.05
   meleeRange: 0
   isMelee: 0
   projectilePrefab: {fileID: 0}

@@ -7,7 +7,6 @@ public class MenuManager : MonoBehaviour
     public PanelNavigacija panelNavigacija;
     public GameManager gameManager;
 
-    [Tooltip("Stari gumb 'Meni' na ekranu - automatski se sakriva (koristi se tipka M)")]
     public GameObject meniButton;
 
     bool _meniButtonHidden;
@@ -22,15 +21,8 @@ public class MenuManager : MonoBehaviour
     {
         HideMeniButtonOnce();
 
-        if (Keyboard.current == null)
-            return;
-
-        if (Keyboard.current.mKey.wasPressedThisFrame)
-            ToggleMenu();
-
-        if (menuPanel != null && menuPanel.activeSelf &&
-            Keyboard.current.escapeKey.wasPressedThisFrame)
-            CloseMenu();
+        if (menuPanel != null && menuPanel.activeSelf)
+            menuPanel.SetActive(false);
     }
 
     void HideMeniButtonOnce()

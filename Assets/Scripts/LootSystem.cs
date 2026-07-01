@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LootSystem : MonoBehaviour
 {
-    [SerializeField] int coinsReward = 5;
+    [SerializeField] int coinsReward = 3;
 
     public void GiveLoot()
     {

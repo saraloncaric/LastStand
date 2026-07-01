@@ -20,7 +20,17 @@ public class Health : MonoBehaviour
     public void TakeDamage(float amount)
     {
         if (amount <= 0f) return;
+
+        bool wasAlive = currentHealth > 0f;
         currentHealth -= amount;
+
+        if (wasAlive && currentHealth > 0f)
+        {
+            EnemyAI enemy = GetComponent<EnemyAI>();
+            if (enemy != null)
+                enemy.NotifyFirstHit();
+        }
+
         if (currentHealth <= 0f)
         {
             currentHealth = 0f;
@@ -32,6 +42,14 @@ public class Health : MonoBehaviour
             {
                 GrantDeathReward();
                 SpawnBloodCircle();
+
+                EnemyAI enemy = GetComponent<EnemyAI>();
+                if (enemy != null)
+                {
+                    enemy.NotifyDeath();
+                    return;
+                }
+
                 Destroy(gameObject);
             }
         }

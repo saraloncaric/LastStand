@@ -9,11 +9,10 @@ public class PanelNavigacija : MonoBehaviour
     public GameObject healthPanel;
     public GameObject lokacijePanel;
     public GameObject vojniciPanel;
+    public GameObject audioPanel;
 
     [Header("Navigacija (X -> strelica nazad)")]
-    [Tooltip("'X' gumb (Zatvori) - pretvara se u strelicu nazad i vraca na glavni meni")]
     public Button zatvoriButton;
-    [Tooltip("Opcionalno: stara mrtva strelica koja se sakriva")]
     public GameObject staraStrelica;
 
     Transform _vojniciBackButton;
@@ -30,6 +29,7 @@ public class PanelNavigacija : MonoBehaviour
         SetActiveSafe(healthPanel, false);
         SetActiveSafe(lokacijePanel, false);
         SetActiveSafe(vojniciPanel, false);
+        SetActiveSafe(audioPanel, false);
 
         DisablePanelBackgroundRaycasts();
         SetupBackButton();
@@ -55,6 +55,7 @@ public class PanelNavigacija : MonoBehaviour
         SetPanelBlocksRaycasts(healthPanel, false);
         SetPanelBlocksRaycasts(lokacijePanel, false);
         SetPanelBlocksRaycasts(vojniciPanel, false);
+        SetPanelBlocksRaycasts(audioPanel, false);
     }
 
     void SetupBackButton()
@@ -92,6 +93,8 @@ public class PanelNavigacija : MonoBehaviour
         SetActiveSafe(healthPanel, false);
         SetActiveSafe(lokacijePanel, false);
         SetActiveSafe(vojniciPanel, false);
+        SetActiveSafe(audioPanel, false);
+        BringTabsToFront(glavniMeniPanel);
         SetVojniciBackButton(false);
         BringBackButtonToFront();
     }
@@ -102,7 +105,9 @@ public class PanelNavigacija : MonoBehaviour
         SetActiveSafe(healthPanel, true);
         SetActiveSafe(lokacijePanel, false);
         SetActiveSafe(vojniciPanel, false);
+        SetActiveSafe(audioPanel, false);
         SetPanelBlocksRaycasts(healthPanel, false);
+        BringTabsToFront(healthPanel);
         SetVojniciBackButton(false);
         BringBackButtonToFront();
     }
@@ -113,9 +118,23 @@ public class PanelNavigacija : MonoBehaviour
         SetActiveSafe(healthPanel, false);
         SetActiveSafe(lokacijePanel, false);
         SetActiveSafe(vojniciPanel, true);
+        SetActiveSafe(audioPanel, false);
         SetPanelBlocksRaycasts(vojniciPanel, false);
         BringTabsToFront(vojniciPanel);
         SetVojniciBackButton(true);
+        BringBackButtonToFront();
+    }
+
+    public void PrikaziAudio()
+    {
+        SetActiveSafe(glavniMeniPanel, false);
+        SetActiveSafe(healthPanel, false);
+        SetActiveSafe(lokacijePanel, false);
+        SetActiveSafe(vojniciPanel, false);
+        SetActiveSafe(audioPanel, true);
+        SetPanelBlocksRaycasts(audioPanel, false);
+        BringTabsToFront(audioPanel);
+        SetVojniciBackButton(false);
         BringBackButtonToFront();
     }
 
@@ -125,8 +144,6 @@ public class PanelNavigacija : MonoBehaviour
             zatvoriButton.transform.SetAsLastSibling();
     }
 
-    // Tab gumbi (Vojnici/Toranj) su prva djeca panela pa ih ScrollRect "Popis vojnika"
-    // (zadnji sibling, raycastTarget=1) prekriva i hvata klikove. Dizemo ih iznad.
     void BringTabsToFront(GameObject panel)
     {
         if (panel == null)

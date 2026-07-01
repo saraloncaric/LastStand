@@ -16,11 +16,25 @@ public class UIManager : MonoBehaviour
 
     public GameObject gameOverPanel;
 
+    [Header("HUD stil (opcionalno)")]
+    public TMP_FontAsset hudFontOverride;
+
+    const float LeftBtnX = 20f;
+    const float SkipBtnY = -150f;
+
     GameObject _skipButton;
     Image _towerHealthFill;
     RectTransform _towerHealthFillRect;
     TextMeshProUGUI _towerHealthLabel;
     Health _towerHealth;
+
+    TMP_FontAsset _hudFont;
+
+    static readonly Color ValColor = new Color(0.94f, 0.82f, 0.5f, 1f);
+    static readonly Color TimerColor = new Color(0.66f, 0.9f, 0.98f, 1f);
+    static readonly Color CoinsColor = new Color(1f, 0.88f, 0.53f, 1f);
+    static readonly Color TowerTextColor = new Color(0.92f, 0.96f, 0.9f, 1f);
+    static readonly Color32 OutlineColor = new Color32(26, 20, 16, 220);
 
     void Start() {
         if (economy == null)
@@ -38,6 +52,88 @@ public class UIManager : MonoBehaviour
         SetupTowerHealth();
         CreateSkipButton();
         CreateTowerHealthBar();
+        LayoutHud();
+        StyleHudTexts();
+    }
+
+    TMP_FontAsset GetHudFont()
+    {
+        if (_hudFont != null)
+            return _hudFont;
+
+        if (hudFontOverride != null)
+        {
+            _hudFont = hudFontOverride;
+            return _hudFont;
+        }
+
+        _hudFont = Resources.Load<TMP_FontAsset>("Fonts & Materials/Oswald Bold SDF");
+        if (_hudFont == null)
+            _hudFont = Resources.Load<TMP_FontAsset>("Fonts & Materials/Anton SDF");
+
+        return _hudFont;
+    }
+
+    void StyleHudText(TextMeshProUGUI text, Color color, float size, FontStyles style = FontStyles.Bold)
+    {
+        if (text == null)
+            return;
+
+        TMP_FontAsset font = GetHudFont();
+        if (font != null)
+            text.font = font;
+
+        text.color = color;
+        text.fontSize = size;
+        text.fontStyle = style;
+        text.outlineWidth = 0.22f;
+        text.outlineColor = OutlineColor;
+        text.characterSpacing = 2f;
+    }
+
+    void StyleHudTexts()
+    {
+        StyleHudText(valText, ValColor, 24f);
+        StyleHudText(timerText, TimerColor, 30f);
+        StyleHudText(coinsText, CoinsColor, 24f);
+        StyleHudText(_towerHealthLabel, TowerTextColor, 17f);
+    }
+
+    void LayoutHud() {
+        Canvas canvas = FindFirstObjectByType<Canvas>();
+        if (canvas == null) return;
+
+        AnchorHud(valText, canvas, new Vector2(0f, 1f), new Vector2(20f, -20f), TextAlignmentOptions.TopLeft);
+        AnchorHud(timerText, canvas, new Vector2(0f, 1f), new Vector2(20f, -58f), TextAlignmentOptions.TopLeft);
+
+        if (valText != null) valText.fontSize = 24f;
+        if (timerText != null) timerText.fontSize = 30f;
+        if (coinsText != null) coinsText.fontSize = 24f;
+
+        if (fazaText != null)
+            fazaText.gameObject.SetActive(false);
+
+        AnchorHud(coinsText, canvas, new Vector2(1f, 1f), new Vector2(-20f, -20f), TextAlignmentOptions.TopRight);
+    }
+
+    void AnchorHud(TextMeshProUGUI text, Canvas canvas, Vector2 corner, Vector2 offset, TextAlignmentOptions align) {
+        if (text == null) return;
+
+        RectTransform rt = text.rectTransform;
+        rt.SetParent(canvas.transform, true);
+        rt.localScale = Vector3.one;
+        rt.anchorMin = corner;
+        rt.anchorMax = corner;
+        rt.pivot = corner;
+        rt.anchoredPosition = offset;
+        rt.sizeDelta = new Vector2(320f, 40f);
+
+        text.gameObject.SetActive(true);
+        text.alignment = align;
+        text.enableAutoSizing = false;
+        if (text.fontSize < 18f)
+            text.fontSize = 22f;
+        text.transform.SetAsLastSibling();
     }
 
     void Update() {
@@ -47,25 +143,32 @@ public class UIManager : MonoBehaviour
         }
 
         if (economy != null && coinsText != null)
-            coinsText.text = "Coins: " + economy.coins;
+        {
+            coinsText.text = "◆ " + economy.coins;
+            coinsText.color = CoinsColor;
+        }
 
         if (gameManager != null) {
-            if (fazaText != null)
-                fazaText.text = "Faza: " + gameManager.trenutnafaza.ToString();
-
             if (valText != null) {
-                if (gameManager.trenutniVal > 0)
-                    valText.text = "Val: " + gameManager.trenutniVal;
-                else
-                    valText.text = "Val: -";
+                if (gameManager.trenutnafaza == GameManager.GamePhase.Priprema) {
+                    int sljedeci = gameManager.trenutniVal + 1;
+                    valText.text = "PRIPREMA  ·  VAL " + sljedeci;
+                }
+                else if (gameManager.trenutnafaza == GameManager.GamePhase.Val) {
+                    valText.text = "VAL " + gameManager.trenutniVal;
+                }
+                valText.color = ValColor;
             }
 
             if (timerText != null) {
-                int sekunde = Mathf.CeilToInt(gameManager.timer);
+                int sekunde = Mathf.CeilToInt(Mathf.Max(0f, gameManager.timer));
                 int minute = sekunde / 60;
                 int sek = sekunde % 60;
                 timerText.text = string.Format("{0:00}:{1:00}", minute, sek);
+                timerText.color = TimerColor;
             }
+
+            SetSkipButtonVisible(gameManager.trenutnafaza == GameManager.GamePhase.Priprema);
         }
 
         UpdateTowerHealthBar();
@@ -91,32 +194,22 @@ public class UIManager : MonoBehaviour
         if (GameObject.Find("PreskociVal") != null)
         {
             _skipButton = GameObject.Find("PreskociVal");
-            _skipButton.SetActive(true);
+            PositionSkipButton();
+            _skipButton.SetActive(false);
             return;
         }
 
-        Button meniBtn = GameObject.Find("Meni")?.GetComponent<Button>();
-        if (meniBtn == null) return;
-
-        RectTransform meniRt = meniBtn.GetComponent<RectTransform>();
-        Transform canvas = meniRt.parent;
-        Sprite buttonSprite = meniBtn.GetComponent<Image>()?.sprite;
+        Canvas canvas = FindFirstObjectByType<Canvas>();
+        if (canvas == null) return;
 
         _skipButton = new GameObject("PreskociVal", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
         _skipButton.layer = 5;
-        _skipButton.transform.SetParent(canvas, false);
+        _skipButton.transform.SetParent(canvas.transform, false);
 
-        RectTransform skipRt = _skipButton.GetComponent<RectTransform>();
-        skipRt.anchorMin = meniRt.anchorMin;
-        skipRt.anchorMax = meniRt.anchorMax;
-        skipRt.pivot = meniRt.pivot;
-        skipRt.sizeDelta = new Vector2(110f, 30f);
-        skipRt.anchoredPosition = meniRt.anchoredPosition + new Vector2(130f, 0f);
+        PositionSkipButton();
 
         Image skipImage = _skipButton.GetComponent<Image>();
-        if (buttonSprite != null)
-            skipImage.sprite = buttonSprite;
-        skipImage.type = Image.Type.Sliced;
+        skipImage.color = new Color(0.32f, 0.28f, 0.24f, 1f);
 
         GameObject textObj = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
         textObj.layer = 5;
@@ -137,7 +230,20 @@ public class UIManager : MonoBehaviour
         Button skipBtn = _skipButton.GetComponent<Button>();
         skipBtn.targetGraphic = skipImage;
         skipBtn.onClick.AddListener(PreskociFazu);
-        _skipButton.SetActive(true);
+        _skipButton.SetActive(false);
+    }
+
+    void PositionSkipButton()
+    {
+        if (_skipButton == null)
+            return;
+
+        RectTransform skipRt = _skipButton.GetComponent<RectTransform>();
+        skipRt.anchorMin = new Vector2(0f, 1f);
+        skipRt.anchorMax = new Vector2(0f, 1f);
+        skipRt.pivot = new Vector2(0f, 1f);
+        skipRt.sizeDelta = new Vector2(130f, 46f);
+        skipRt.anchoredPosition = new Vector2(LeftBtnX, SkipBtnY);
     }
 
     void CreateTowerHealthBar() {
@@ -155,8 +261,8 @@ public class UIManager : MonoBehaviour
         rootRt.anchorMin = new Vector2(0.5f, 1f);
         rootRt.anchorMax = new Vector2(0.5f, 1f);
         rootRt.pivot = new Vector2(0.5f, 1f);
-        rootRt.sizeDelta = new Vector2(260f, 36f);
-        rootRt.anchoredPosition = new Vector2(0f, -20f);
+        rootRt.sizeDelta = new Vector2(380f, 50f);
+        rootRt.anchoredPosition = new Vector2(0f, -16f);
 
         GameObject labelObj = new GameObject("Label", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
         labelObj.layer = 5;
@@ -167,9 +273,9 @@ public class UIManager : MonoBehaviour
         labelRt.offsetMin = Vector2.zero;
         labelRt.offsetMax = Vector2.zero;
         _towerHealthLabel = labelObj.GetComponent<TextMeshProUGUI>();
-        _towerHealthLabel.fontSize = 14;
+        _towerHealthLabel.fontSize = 17;
         _towerHealthLabel.alignment = TextAlignmentOptions.Center;
-        _towerHealthLabel.color = Color.white;
+        _towerHealthLabel.color = TowerTextColor;
         _towerHealthLabel.text = "Toranj";
 
         GameObject bgObj = new GameObject("Background", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
@@ -216,8 +322,10 @@ public class UIManager : MonoBehaviour
                 _towerHealthFill.color = new Color(0.9f, 0.2f, 0.15f, 1f);
         }
 
-        if (_towerHealthLabel != null)
-            _towerHealthLabel.text = "Toranj: " + Mathf.CeilToInt(_towerHealth.currentHealth) + " / " + Mathf.CeilToInt(_towerHealth.maxHealth);
+        if (_towerHealthLabel != null) {
+            _towerHealthLabel.text = "TORANJ  " + Mathf.CeilToInt(_towerHealth.currentHealth) + " / " + Mathf.CeilToInt(_towerHealth.maxHealth);
+            _towerHealthLabel.color = TowerTextColor;
+        }
     }
 
     public void PrikaziUpozorenje() {

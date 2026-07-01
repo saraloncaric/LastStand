@@ -5,7 +5,7 @@ public class WeaponStats : MonoBehaviour
     [Header("Luk i strijela (svi vojnici)")]
     public float w1_damage = 20f;
     public float w1_projectileSpeed = 28f;
-    public float w1_fireRate = 0.85f;
+    public float w1_fireRate = 1.05f;
     public GameObject w1_projectilePrefab;
 
     [Header("Dijeli se između valova")]
@@ -26,6 +26,12 @@ public class WeaponStats : MonoBehaviour
     public void SetWave(int wave)
     {
         ApplyBowStats();
+    }
+
+    public void ApplyRoleModifiers(bool chief)
+    {
+        ApplyBowStats();
+        damage *= chief ? 1.1f : 0.8f;
     }
 
     void ApplyBowStats()

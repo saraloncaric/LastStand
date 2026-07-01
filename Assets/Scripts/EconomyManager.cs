@@ -4,7 +4,7 @@ public class EconomyManager : MonoBehaviour
 {
     public static EconomyManager Instance { get; private set; }
 
-    public int coins = 50;
+    public int coins = 51;
 
     void Awake() {
         if (Instance != null && Instance != this)
@@ -27,7 +27,7 @@ public class EconomyManager : MonoBehaviour
     }
 
     public void EnemyKilled() {
-        AddCoins(5);
+        AddCoins(3);
     }
 
     public bool TryRepair() {
