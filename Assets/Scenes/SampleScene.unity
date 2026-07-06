@@ -1719,9 +1719,9 @@ MonoBehaviour:
   - naziv: 'Ispred tornja lijevo '
     spawnPoint: {fileID: 505400211}
     zauzeto: 0
-  gumbPrefab: {fileID: 8147149751821537864, guid: 0eb84de09f56427409dde6e942466100, type: 3}
-  gumbContainer: {fileID: 627649308}
-  oruzjeGumbPrefab: {fileID: 586579732112143943, guid: 72d72139c45488040af5c059b9f4682c, type: 3}
+  maxVojnika: 12
+  cijenaPostavljanja: 15
+  chiefLokacijaIndex: 0
 --- !u!1 &273882281
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,13 +2221,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.25282818, y: -0.66036195, z: 0.25282818, w: 0.66036195}
-  m_LocalPosition: {x: 1167, y: 223.5, z: 565.1}
+  m_LocalRotation: {x: 0.27342415, y: -0.6521037, z: 0.27342415, w: 0.6521037}
+  m_LocalPosition: {x: 1147.4, y: 203.6, z: 565.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 41.9, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 45.496, y: -90, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2286,9 +2286,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   moveSpeed: 28
   edgeScrollSize: 20
-  edgeScrollEnabled: 1
-  minHeight: 22
-  maxHeight: 350
+  edgeScrollEnabled: 0
+  throttleStep: 0.05
+  minHeight: 80
+  maxHeight: 204
+  zoomSpeed: 20
+  minZ: 400
+  maxZ: 700
+  minX: 1000
+  maxX: 1147
   rotateSpeed: 120
   minPitch: 25
   maxPitch: 80
@@ -5608,6 +5614,7 @@ MonoBehaviour:
   timerText: {fileID: 0}
   upozorenjeText: {fileID: 0}
   gameOverPanel: {fileID: 0}
+  hudFontOverride: {fileID: 0}
 --- !u!1 &781207160
 GameObject:
   m_ObjectHideFlags: 0
@@ -7713,6 +7720,7 @@ MonoBehaviour:
   zidText: {fileID: 61210306}
   economy: {fileID: 1847560483}
   cijenaPopravka: 50
+  healPercent: 0.25
 --- !u!4 &1053619404
 Transform:
   m_ObjectHideFlags: 0
@@ -10365,6 +10373,7 @@ MonoBehaviour:
   timerText: {fileID: 883791383}
   upozorenjeText: {fileID: 788468998}
   gameOverPanel: {fileID: 497187732}
+  hudFontOverride: {fileID: 0}
 --- !u!4 &1426277612
 Transform:
   m_ObjectHideFlags: 0

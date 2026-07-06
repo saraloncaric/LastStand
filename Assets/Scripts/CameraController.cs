@@ -9,8 +9,7 @@ public class CameraController : MonoBehaviour
     {
         get
         {
-            if (Instance == null)
-                return 0.5f;
+            if (Instance == null) return 0.5f;
             return Instance.GetNormalizedHeight();
         }
     }
@@ -27,72 +26,84 @@ public class CameraController : MonoBehaviour
     public float minHeight = 22f;
     public float maxHeight = 350f;
 
+    [Header("Zoom (scroll)")]
+    public float zoomSpeed = 20f;
+
+    [Header("Granice kretanja")]
+    public float minZ = 565f;  
+    public float maxZ = 1200f;
+    public float minX = 800f;
+    public float maxX = 1500f;
+
     [Header("Rotacija")]
     public float rotateSpeed = 120f;
     public float minPitch = 25f;
     public float maxPitch = 80f;
 
     float _throttle = 1f;
-
     public float Throttle => _throttle;
     public int ThrottlePercent => Mathf.RoundToInt(_throttle * 100f);
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    void Awake() { Instance = this; }
 
-    void OnDestroy()
-    {
-        if (Instance == this)
-            Instance = null;
-    }
+    void OnDestroy() { if (Instance == this) Instance = null; }
 
     float GetNormalizedHeight()
     {
         float range = maxHeight - minHeight;
-        if (range <= 0.001f)
-            return 0f;
+        if (range <= 0.001f) return 0f;
         return Mathf.Clamp01((transform.position.y - minHeight) / range);
     }
 
     float MouseSensitivity => CameraSettingsManager.Instance != null
-        ? CameraSettingsManager.Instance.MouseSensitivity
-        : 0.2f;
+        ? CameraSettingsManager.Instance.MouseSensitivity : 0.2f;
 
     float MoveSpeedMultiplier => CameraSettingsManager.Instance != null
-        ? CameraSettingsManager.Instance.MoveSpeedMultiplier
-        : 1f;
+        ? CameraSettingsManager.Instance.MoveSpeedMultiplier : 1f;
 
     void Update()
     {
-        if (PauseMenu.IsPaused)
-            return;
-
+        if (PauseMenu.IsPaused) return;
         HandleThrottle();
-
-        if (Keyboard.current == null && Mouse.current == null)
-            return;
-
+        if (Keyboard.current == null && Mouse.current == null) return;
+        HandleZoom();
         HandleMove();
         HandleRotate();
+        ClampPosition();
     }
 
     void HandleThrottle()
     {
-        if (Keyboard.current == null || Mouse.current == null)
-            return;
-
+        if (Keyboard.current == null || Mouse.current == null) return;
         bool ctrl = Keyboard.current.leftCtrlKey.isPressed || Keyboard.current.rightCtrlKey.isPressed;
-        if (!ctrl)
-            return;
-
+        if (!ctrl) return;
         float scroll = Mouse.current.scroll.ReadValue().y;
-        if (Mathf.Approximately(scroll, 0f))
-            return;
-
+        if (Mathf.Approximately(scroll, 0f)) return;
         _throttle += Mathf.Sign(scroll) * throttleStep;
         _throttle = Mathf.Clamp(_throttle, 0.01f, 1f);
+    }
+
+    void HandleZoom()
+    {
+        if (Mouse.current == null) return;
+        bool ctrl = Keyboard.current != null && 
+            (Keyboard.current.leftCtrlKey.isPressed || Keyboard.current.rightCtrlKey.isPressed);
+        if (ctrl) return;
+
+        float scroll = Mouse.current.scroll.ReadValue().y;
+        if (Mathf.Approximately(scroll, 0f)) return;
+
+        Vector3 pos = transform.position;
+        float savedX = pos.x;
+        float savedZ = pos.z;
+        
+        pos.y -= scroll * zoomSpeed * 0.5f;
+        pos.y = Mathf.Clamp(pos.y, minHeight, maxHeight);
+        
+        pos.x = savedX;
+        pos.z = savedZ;
+        
+        transform.position = pos;
     }
 
     void HandleMove()
@@ -108,12 +119,13 @@ public class CameraController : MonoBehaviour
             if (ctrl.IsDown(ctrl.moveLeft)) move.x -= 1f;
             if (ctrl.IsDown(ctrl.moveRight)) move.x += 1f;
         }
-        else if (kb != null)
+
+        if (kb != null)
         {
-            if (kb.wKey.isPressed || kb.upArrowKey.isPressed) move.z += 1f;
-            if (kb.sKey.isPressed || kb.downArrowKey.isPressed) move.z -= 1f;
-            if (kb.aKey.isPressed || kb.leftArrowKey.isPressed) move.x -= 1f;
-            if (kb.dKey.isPressed || kb.rightArrowKey.isPressed) move.x += 1f;
+            if (kb.upArrowKey.isPressed) move.z += 1f;
+            if (kb.downArrowKey.isPressed) move.z -= 1f;
+            if (kb.leftArrowKey.isPressed) move.x -= 1f;
+            if (kb.rightArrowKey.isPressed) move.x += 1f;
         }
 
         if (edgeScrollEnabled && Mouse.current != null)
@@ -128,8 +140,7 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        if (move == Vector3.zero)
-            return;
+        if (move == Vector3.zero) return;
 
         Vector3 forward = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
         Vector3 right = new Vector3(transform.right.x, 0f, transform.right.z).normalized;
@@ -137,6 +148,15 @@ public class CameraController : MonoBehaviour
 
         float speed = moveSpeed * MoveSpeedMultiplier * _throttle;
         transform.position += dir * speed * Time.deltaTime;
+    }
+
+    void ClampPosition()
+    {
+        Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, minX, maxX);
+        pos.z = Mathf.Clamp(pos.z, minZ, maxZ);
+        pos.y = Mathf.Clamp(pos.y, minHeight, maxHeight);
+        transform.position = pos;
     }
 
     void HandleRotate()
@@ -171,10 +191,8 @@ public class CameraController : MonoBehaviour
             pitch -= dy * rotateSpeed * sens * Time.deltaTime;
         }
 
-        if (pitch > 180f)
-            pitch -= 360f;
+        if (pitch > 180f) pitch -= 360f;
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
-
         transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
     }
 }

@@ -334,7 +334,7 @@ public class UIManager : MonoBehaviour
     }
 
     System.Collections.IEnumerator PrikaziUpozorenjeRoutine() {
-        upozorenjeText.text = "⚠ Neprijatelji se približavaju!";
+        upozorenjeText.text = "Neprijatelji se približavaju!";
         upozorenjeText.gameObject.SetActive(true);
         yield return new WaitForSeconds(3f);
         upozorenjeText.gameObject.SetActive(false);

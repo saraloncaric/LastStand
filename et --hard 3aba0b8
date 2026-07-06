@@ -1,0 +1,67 @@
+[33m5cd2738[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m fix: strijelci gađaju najbližeg neprijatelja u dometu
+[33mb50e43a[m feat: enemy animacije, hit react i archer falloff na daljinu
+[33m6848d26[m fix: deployment, pause restart i ekonomija vojnika
+[33ma567317[m feat: modularni UI, pause menu, settings, audio slideri i controls s hotkeyovima, valovi, ekonomija i audio balans UI prebačen na runtime panele — prozori vojnici/toranj (drag/resize), HUD, pause (Esc) s audio sliderima i controls (scroll + rebind). Stari tab meni ugašen. Kamera: osjetljivost/brzina, WASD/QE, V/C, Ctrl+scroll gas. Valovi: timer ili clear neprijatelja. Deployment: chief na tornju (free premium oružje), obični auto-luk pri deployu, pozicija blokirana bez para. Balans: chief +range/+damage, vojnici/zombiji nerf. Ekonomija: 3/kill, popravak 50, deploy 15, luk 7. Zvukovi: tense tema, war cry, strijela, enemy/soldier hit, smrt, hod — uštimani po kategorijama (SFX slider, ground listener).
+[33mec7ef40[m Add audio sustav (zvukovi enemy/soldier), fix kamera, meni i Vojnici->Toranj tab
+[33m3aba0b8[m Filip - Implementacija i refaktoriranje skripti za Betu
+[33md313e9f[m Scene
+[33m1dc57b4[m otvaranje menija i timer
+[33m142e3e5[m Dodano upozorenje, ispravljen GameOver, povezani soundovi
+[33m8fca911[m Merge filip-beta-funkcionalnosti u main
+[33m16bc52d[m[33m ([m[1;32mfilip-beta-funkcionalnosti[m[33m)[m Ispravak pomjesanih skripti
+[33m7f1cc59[m Update TerrainData_462e69e4-ced7-4677-886e-dd76b9d24953.asset
+[33m7589710[m Ispravak pomjesanih skripti
+[33m59609f9[m Update TerrainData_462e69e4-ced7-4677-886e-dd76b9d24953.asset
+[33ma0865a0[m teren
+[33m8239f7e[m Add terrain data
+[33m0ee2272[m Filip - Implementirane sve skripte za Betu
+[33me2f86de[m Add blood circle prefab
+[33ma2cd53e[m Resolve merge conflicts
+[33m32f5ee3[m Implementirao kombat soldiera
+[33mc6a55b3[m Update SoldierAI.cs
+[33macde83b[m Update MusicManager.cs
+[33m4c06c49[m Update Projectile.cs
+[33mbeff62c[m Update Health.cs
+[33mb28c283[m Update WeaponStats.cs
+[33m1997053[m Update SoldierAI.cs
+[33m362615c[m Update GameManager.cs
+[33maac7414[m Merge branch 'main' of https://github.com/saraloncaric/Last-Stand-2026-05-08_14-33-23
+[33mf26178d[m fix level of detail od stabala
+[33m3a55325[m BETA MusicManager.cs
+[33mb58dc6b[m Add files via upload
+[33mb499e8e[m BETA Projectile.cs
+[33m4cfbc73[m BETA SoldierAI.cs
+[33me26d3ee[m BETA WeaponStats.cs
+[33m5959ba4[m  dio za oruzje u meniju
+[33m8b35de5[m Meni dio za pozicije vojnika
+[33m6bc618b[m Meni - vojnici
+[33m266ede3[m uređen izgled dijela menija
+[33mab51149[m uređivanje menija
+[33m0835602[m Greska kod menija
+[33m5b85538[m povezana skripta u unity-u i dodana linija koda jedna
+[33m834bde5[m ostale skripte nadograđene i propravljene
+[33mbd30c0f[m Nadograđene i popravljene dvije skipte
+[33mc54bc93[m maknut debug nakon rjesavanja greske
+[33m805aec2[m Popravljen meni i lokacije vojnika
+[33m714e02f[m Popravljen meni
+[33m623c874[m Dovrsen meni
+[33m2dd6a37[m Dodan meni i skripta za meni
+[33m8bedc86[m promjenjen goal za neprijatelje
+[33m61672ec[m Postavljeno da se neprijatelji krecu prema dvorcu
+[33me5f397a[m dodane skripte koje nisu povucene, postavljena lokacija gdje ce se pojavljivat neprijatelji
+[33mf46dc35[m Pozicije za vojnike na tornju i ispred
+[33me479be0[m dodana rotacija kamere
+[33m88fd5f5[m Dodane komponente na vojnike i neprijatelje, projectile prefab, Enemy tag
+[33me2a6b04[m Dodana skripta za kameru i povezana
+[33m3ddf2e7[m dodane skripte sve i okruzenje popravljeno sta nije radilo
+[33mc54e3f2[m Add files via upload
+[33mc0ca725[m landscape, likovi
+[33m44238ed[m dodana skripta i povecani coinsi
+[33ma648c5f[m isspravljena type greska
+[33ma366ed1[m funkcija za postavljanje vojnika na lokacije
+[33m761f463[m Dodano za popravak i gumb
+[33mbcdbded[m UI, dodane skripte
+[33me9a3f45[m Popravak navodnika i dodana faza igre
+[33m3abf667[m Logika coinsa i popravaka
+[33mc1e28e9[m Asset okruzenja - pocetak
+[33m9fc0a74[m Initial check-in
