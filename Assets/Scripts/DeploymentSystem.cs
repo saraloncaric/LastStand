@@ -11,6 +11,10 @@ public class DeploymentSystem : MonoBehaviour
         public string naziv;
         public Transform spawnPoint;
         [HideInInspector] public bool zauzeto;
+        
+        public enum TipLokacije { Zid, Toranj }
+        public TipLokacije tip = TipLokacije.Zid;
+        public float detectionRangeBonus = 0f;
     }
 
     public EconomyManager economy;
@@ -99,20 +103,13 @@ public class DeploymentSystem : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!_renderQueued || _container == null)
-            return;
-
+        if (!_renderQueued || _container == null) return;
         _renderQueued = false;
-        if (!_container.gameObject.activeInHierarchy)
-            return;
-
+        if (!_container.gameObject.activeInHierarchy) return;
         RenderNow();
     }
 
-    void QueueRender()
-    {
-        _renderQueued = true;
-    }
+    void QueueRender() { _renderQueued = true; }
 
     public void OnWindowOpened()
     {
@@ -161,22 +158,16 @@ public class DeploymentSystem : MonoBehaviour
 
     void Update()
     {
-        if (_container == null || economy == null)
-            return;
-        if (economy.coins == _lastCoins)
-            return;
-
+        if (_container == null || economy == null) return;
+        if (economy.coins == _lastCoins) return;
         QueueRender();
     }
 
     public void RefreshScroll()
     {
-        if (_container == null)
-            return;
-
+        if (_container == null) return;
         ScrollRect sr = _container.GetComponentInParent<ScrollRect>();
         UiScrollHelper.Refresh(sr);
-
         ScrollRectRefresher refresher = sr != null ? sr.GetComponent<ScrollRectRefresher>() : null;
         if (refresher != null)
             refresher.RefreshNow();
@@ -184,21 +175,14 @@ public class DeploymentSystem : MonoBehaviour
 
     void ScrollSubmenuIntoView()
     {
-        if (_container == null)
-            return;
-
+        if (_container == null) return;
         ScrollRect sr = _container.GetComponentInParent<ScrollRect>();
-        if (sr == null)
-            return;
-
+        if (sr == null) return;
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(_container);
-
         float contentH = _container.rect.height;
         float viewH = sr.viewport != null ? sr.viewport.rect.height : 0f;
-        if (contentH <= viewH)
-            return;
-
+        if (contentH <= viewH) return;
         sr.verticalNormalizedPosition = 0f;
     }
 
@@ -224,20 +208,16 @@ public class DeploymentSystem : MonoBehaviour
 
     void TryOpenPozicija(int index)
     {
-        if (index < 0 || index >= _vojnici.Count)
-            return;
+        if (index < 0 || index >= _vojnici.Count) return;
         Vojnik v = _vojnici[index];
-        if (!v.chief && v.lokacija < 0 && !v.deployPlacen && !CanAffordDeploy(v))
-            return;
+        if (!v.chief && v.lokacija < 0 && !v.deployPlacen && !CanAffordDeploy(v)) return;
         ToggleSub(index, SubMenu.Pozicija);
     }
 
     bool CanAffordDeploy(Vojnik v)
     {
-        if (economy == null)
-            return false;
-        if (v.lokacija >= 0 || v.deployPlacen)
-            return true;
+        if (economy == null) return false;
+        if (v.lokacija >= 0 || v.deployPlacen) return true;
         return economy.coins >= GetDeployCost(v);
     }
 
@@ -248,11 +228,9 @@ public class DeploymentSystem : MonoBehaviour
 
     void TryOpenOruzje(int index)
     {
-        if (index < 0 || index >= _vojnici.Count)
-            return;
+        if (index < 0 || index >= _vojnici.Count) return;
         Vojnik v = _vojnici[index];
-        if (!CanUseOruzjeMenu(v))
-            return;
+        if (!CanUseOruzjeMenu(v)) return;
         ToggleSub(index, SubMenu.Oruzje);
     }
 
@@ -268,8 +246,7 @@ public class DeploymentSystem : MonoBehaviour
 
     bool ShouldGrayOruzjeButton(Vojnik v)
     {
-        if (!IsDeployed(v))
-            return true;
+        if (!IsDeployed(v)) return true;
 
         int val = gameManager != null ? gameManager.trenutniVal : 1;
         WeaponOffer[] offers = GetWeaponOffers(val);
@@ -277,17 +254,12 @@ public class DeploymentSystem : MonoBehaviour
         if (offers.Length <= 1)
         {
             WeaponOffer only = offers[0];
-            if (v.oruzje == only.naziv)
-                return true;
-
-            if (v.chief)
-                return false;
-
+            if (v.oruzje == only.naziv) return true;
+            if (v.chief) return false;
             return economy == null || economy.coins < only.cijena;
         }
 
-        if (v.chief)
-            return false;
+        if (v.chief) return false;
 
         if (!HasWeapon(v))
         {
@@ -297,9 +269,7 @@ public class DeploymentSystem : MonoBehaviour
 
         foreach (WeaponOffer offer in offers)
         {
-            if (v.oruzje == offer.naziv)
-                continue;
-
+            if (v.oruzje == offer.naziv) continue;
             int diff = Mathf.Max(0, offer.cijena - v.oruzjeTierCijena);
             return economy == null || economy.coins < diff;
         }
@@ -308,22 +278,16 @@ public class DeploymentSystem : MonoBehaviour
 
     bool CanAffordWeaponUpgrade(Vojnik v, WeaponOffer offer)
     {
-        if (!IsDeployed(v))
-            return false;
-        if (v.oruzje == offer.naziv)
-            return false;
-        if (v.chief)
-            return true;
-
+        if (!IsDeployed(v)) return false;
+        if (v.oruzje == offer.naziv) return false;
+        if (v.chief) return true;
         int diff = Mathf.Max(0, offer.cijena - v.oruzjeTierCijena);
         return diff == 0 || (economy != null && economy.coins >= diff);
     }
 
     int GetDeployCost(Vojnik v)
     {
-        if (v.lokacija >= 0 || v.deployPlacen)
-            return 0;
-
+        if (v.lokacija >= 0 || v.deployPlacen) return 0;
         int cost = cijenaPostavljanja;
         if (!HasWeapon(v))
         {
@@ -335,8 +299,7 @@ public class DeploymentSystem : MonoBehaviour
 
     void BuildPozicije(Vojnik v)
     {
-        if (v.chief)
-            return;
+        if (v.chief) return;
 
         if (v.lokacija >= 0)
             CreateFullButton("✕ Makni s pozicije", () => { Undeploy(v); QueueRender(); CloseSub(); });
@@ -350,9 +313,14 @@ public class DeploymentSystem : MonoBehaviour
             int lokIndex = i;
             if (lokacije[i].zauzeto) continue;
 
+            // prikaz tipa lokacije
+            string tipLabel = lokacije[i].tip == Lokacija.TipLokacije.Toranj
+                ? " [Toranj + range]"
+                : " [Zid]";
+
             string label = needsPayment
-                ? "→ " + lokacije[i].naziv + "  (" + deployCost + " coin)"
-                : "→ " + lokacije[i].naziv;
+                ? "→ " + lokacije[i].naziv + tipLabel + "  (" + deployCost + " coin)"
+                : "→ " + lokacije[i].naziv + tipLabel;
 
             bool disabled = needsPayment && !canAfford;
             CreateFullButton(label, () =>
@@ -376,23 +344,15 @@ public class DeploymentSystem : MonoBehaviour
             int diff = Mathf.Max(0, cijena - v.oruzjeTierCijena);
 
             string label;
-            if (owned)
-                label = naziv + "  ✓";
-            else if (v.chief)
-                label = naziv + "  (besplatno)";
-            else if (diff == 0)
-                label = naziv + "  (besplatno)";
-            else
-                label = naziv + "  (+" + diff + " coins)";
+            if (owned) label = naziv + "  ✓";
+            else if (v.chief) label = naziv + "  (besplatno)";
+            else if (diff == 0) label = naziv + "  (besplatno)";
+            else label = naziv + "  (+" + diff + " coins)";
 
             bool disabled = owned || !CanAffordWeaponUpgrade(v, offer);
             CreateFullButton(label, () =>
             {
-                if (owned || !CanAffordWeaponUpgrade(v, offer))
-                {
-                    CloseSub();
-                    return;
-                }
+                if (owned || !CanAffordWeaponUpgrade(v, offer)) { CloseSub(); return; }
                 TryUpgradeWeapon(v, naziv, cijena);
                 CloseSub();
             }, disabled);
@@ -401,10 +361,8 @@ public class DeploymentSystem : MonoBehaviour
 
     WeaponOffer[] GetWeaponOffers(int val)
     {
-        if (val <= 1)
-            return new[] { new WeaponOffer { naziv = "Luk", cijena = 7 } };
-        if (val == 2)
-            return new[] { new WeaponOffer { naziv = "Bodež", cijena = 5 } };
+        if (val <= 1) return new[] { new WeaponOffer { naziv = "Luk", cijena = 7 } };
+        if (val == 2) return new[] { new WeaponOffer { naziv = "Bodež", cijena = 5 } };
         return new[]
         {
             new WeaponOffer { naziv = "Mač", cijena = 6 },
@@ -417,10 +375,7 @@ public class DeploymentSystem : MonoBehaviour
         WeaponOffer[] offers = GetWeaponOffers(val);
         WeaponOffer best = offers[0];
         for (int i = 1; i < offers.Length; i++)
-        {
-            if (offers[i].cijena > best.cijena)
-                best = offers[i];
-        }
+            if (offers[i].cijena > best.cijena) best = offers[i];
         return best;
     }
 
@@ -429,10 +384,7 @@ public class DeploymentSystem : MonoBehaviour
         WeaponOffer[] offers = GetWeaponOffers(val);
         WeaponOffer best = offers[0];
         for (int i = 1; i < offers.Length; i++)
-        {
-            if (offers[i].cijena < best.cijena)
-                best = offers[i];
-        }
+            if (offers[i].cijena < best.cijena) best = offers[i];
         return best;
     }
 
@@ -447,22 +399,14 @@ public class DeploymentSystem : MonoBehaviour
 
     void TryUpgradeWeapon(Vojnik v, string naziv, int cijena)
     {
-        if (v.oruzje == naziv)
-            return;
-
-        if (!IsDeployed(v))
-            return;
-
+        if (v.oruzje == naziv) return;
+        if (!IsDeployed(v)) return;
         if (!v.chief)
         {
             int diff = Mathf.Max(0, cijena - v.oruzjeTierCijena);
-            if (economy != null && economy.coins < diff)
-                return;
-
-            if (economy != null)
-                economy.coins -= diff;
+            if (economy != null && economy.coins < diff) return;
+            if (economy != null) economy.coins -= diff;
         }
-
         v.oruzje = naziv;
         v.oruzjeTierCijena = cijena;
         ApplyWeaponToInstance(v);
@@ -471,16 +415,13 @@ public class DeploymentSystem : MonoBehaviour
 
     void ApplyWeaponToInstance(Vojnik v)
     {
-        if (v.instance == null)
-            return;
-
+        if (v.instance == null) return;
         WeaponStats stats = v.instance.GetComponent<WeaponStats>();
         if (stats != null)
         {
             stats.SetWave(gameManager != null ? gameManager.trenutniVal : 1);
             stats.ApplyRoleModifiers(v.chief);
         }
-
         SoldierAI ai = v.instance.GetComponent<SoldierAI>();
         if (ai != null)
             ai.ApplyRoleModifiers(v.chief);
@@ -503,9 +444,7 @@ public class DeploymentSystem : MonoBehaviour
     {
         if (lokacije == null || lokIndex < 0 || lokIndex >= lokacije.Length) return false;
         if (lokacije[lokIndex].zauzeto) return false;
-
-        if (v.chief && lokIndex != chiefLokacijaIndex)
-            return false;
+        if (v.chief && lokIndex != chiefLokacijaIndex) return false;
 
         bool noviRaspored = v.lokacija == -1;
         bool needsWeapon = !HasWeapon(v);
@@ -513,8 +452,7 @@ public class DeploymentSystem : MonoBehaviour
         if (!free && NeedsDeployPayment(v))
         {
             int cost = GetDeployCost(v);
-            if (economy == null || economy.coins < cost)
-                return false;
+            if (economy == null || economy.coins < cost) return false;
             economy.coins -= cost;
             v.deployPlacen = true;
         }
@@ -537,6 +475,10 @@ public class DeploymentSystem : MonoBehaviour
         else
             ApplyWeaponToInstance(v);
 
+        SoldierAI ai = v.instance != null ? v.instance.GetComponent<SoldierAI>() : null;
+        if (ai != null)
+            ai.SetDetectionRange(ai.detectionRange + lok.detectionRangeBonus);
+
         if (noviRaspored)
             AddEmptySlotIfNeeded();
 
@@ -554,34 +496,22 @@ public class DeploymentSystem : MonoBehaviour
         _container = null;
 
         if (lokacije != null)
-        {
             for (int i = 0; i < lokacije.Length; i++)
                 lokacije[i].zauzeto = false;
-        }
     }
 
-    void OnEnable()
-    {
-        SceneManager.sceneLoaded += HandleSceneLoaded;
-    }
-
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= HandleSceneLoaded;
-    }
+    void OnEnable() { SceneManager.sceneLoaded += HandleSceneLoaded; }
+    void OnDisable() { SceneManager.sceneLoaded -= HandleSceneLoaded; }
 
     void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (gameObject.scene != scene)
-            return;
+        if (gameObject.scene != scene) return;
         ResetForScene();
     }
 
     void Undeploy(Vojnik v)
     {
-        if (v.chief)
-            return;
-
+        if (v.chief) return;
         if (v.lokacija >= 0 && v.lokacija < lokacije.Length)
             lokacije[v.lokacija].zauzeto = false;
         if (v.instance != null)

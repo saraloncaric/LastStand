@@ -1686,39 +1686,63 @@ MonoBehaviour:
   - naziv: 'Glavni toranj 1 '
     spawnPoint: {fileID: 58543279}
     zauzeto: 0
+    tip: 1
+    detectionRangeBonus: 10
   - naziv: Glavni toranj 2
     spawnPoint: {fileID: 1901816280}
     zauzeto: 0
+    tip: 1
+    detectionRangeBonus: 10
   - naziv: 'Desni toranj 1 '
     spawnPoint: {fileID: 1667037564}
     zauzeto: 0
+    tip: 1
+    detectionRangeBonus: 10
   - naziv: Desni toranj 2
     spawnPoint: {fileID: 354896756}
     zauzeto: 0
+    tip: 1
+    detectionRangeBonus: 10
   - naziv: Lijevi toranj 1
     spawnPoint: {fileID: 451745582}
     zauzeto: 0
+    tip: 1
+    detectionRangeBonus: 10
   - naziv: Lijevi toranj 2
     spawnPoint: {fileID: 1843394895}
     zauzeto: 0
+    tip: 1
+    detectionRangeBonus: 10
   - naziv: Ispred tornja desno
     spawnPoint: {fileID: 1604662546}
     zauzeto: 0
+    tip: 0
+    detectionRangeBonus: 0
   - naziv: Ispred tornja desno blize sredini
     spawnPoint: {fileID: 89215642}
     zauzeto: 0
+    tip: 0
+    detectionRangeBonus: 0
   - naziv: Ispred tornja sredina desno
     spawnPoint: {fileID: 1710376687}
     zauzeto: 0
+    tip: 0
+    detectionRangeBonus: 0
   - naziv: Ispred tornja sredina lijevo
     spawnPoint: {fileID: 464859045}
     zauzeto: 0
+    tip: 0
+    detectionRangeBonus: 0
   - naziv: Ispred tornja lijevo blize sredini
     spawnPoint: {fileID: 1982169468}
     zauzeto: 0
+    tip: 0
+    detectionRangeBonus: 0
   - naziv: 'Ispred tornja lijevo '
     spawnPoint: {fileID: 505400211}
     zauzeto: 0
+    tip: 0
+    detectionRangeBonus: 0
   maxVojnika: 12
   cijenaPostavljanja: 15
   chiefLokacijaIndex: 0

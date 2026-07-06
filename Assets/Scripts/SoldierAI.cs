@@ -315,4 +315,11 @@ public class SoldierAI : MonoBehaviour
         b.y = 0f;
         return Vector3.Distance(a, b);
     }
+    public void SetDetectionRange(float range)
+    {
+        detectionRange = range;
+        _baseMaxRange = range;
+        _baseOptimalRange = range * 0.53f; 
+        ApplyRangeModifiers();
+    }
 }
