@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour
     public float timer = 0f;
 
     static readonly float FirstPrepDuration = 180f;
-    static readonly float PrepDuration = 300f;
-    static readonly float[] WaveDurations = { 300f, 420f, 600f };
+    static readonly float PrepDuration = 240f;
+    static readonly float[] WaveDurations = { 180f, 240f, 300f, 360f, 420f };
 
     public static event Action<int> OnWaveChanged;
     public static event Action OnPreparePhase;
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
         if (trenutnafaza != GamePhase.Val)
             return;
 
-        if (trenutniVal >= 3) {
+        if (trenutniVal >= 5) {
             TriggerGameOver();
             return;
         }
