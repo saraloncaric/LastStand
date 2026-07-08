@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI upozorenjeText;
 
     public GameObject gameOverPanel;
+    public GameObject pobjedaPanel;
 
     [Header("HUD stil (opcionalno)")]
     public TMP_FontAsset hudFontOverride;
@@ -46,6 +47,8 @@ public class UIManager : MonoBehaviour
 
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
+        if (pobjedaPanel != null)
+            pobjedaPanel.SetActive(false);
         if (upozorenjeText != null)
             upozorenjeText.gameObject.SetActive(false);
 
@@ -137,7 +140,8 @@ public class UIManager : MonoBehaviour
     }
 
     void Update() {
-        if (gameManager != null && gameManager.trenutnafaza == GameManager.GamePhase.GameOver) {
+        if (gameManager != null && (gameManager.trenutnafaza == GameManager.GamePhase.GameOver ||
+            gameManager.trenutnafaza == GameManager.GamePhase.Pobjeda)) {
             UpdateTowerHealthBar();
             return;
         }
@@ -342,6 +346,12 @@ public class UIManager : MonoBehaviour
 
     public void PrikaziGameOver() {
         gameOverPanel.SetActive(true);
+    }
+
+    public void PrikaziPobjeda()
+    {
+        if (pobjedaPanel != null)
+            pobjedaPanel.SetActive(true);
     }
 
     public void Restart() {

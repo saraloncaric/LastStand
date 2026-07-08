@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public UIManager uiManager;
 
-    public enum GamePhase { Priprema, Val, GameOver }
+    public enum GamePhase { Priprema, Val, GameOver, Pobjeda }
     public GamePhase trenutnafaza;
     public int trenutniVal = 0;
     public float timer = 0f;
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     }
 
     void Update() {
-        if (trenutnafaza == GamePhase.GameOver)
+        if (trenutnafaza == GamePhase.GameOver || trenutnafaza == GamePhase.Pobjeda)
             return;
 
         if (trenutnafaza == GamePhase.Priprema) {
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
             return;
 
         if (trenutniVal >= 5) {
-            TriggerGameOver();
+            TriggerPobjeda();
             return;
         }
 
@@ -81,14 +81,23 @@ public class GameManager : MonoBehaviour
     }
 
     public void TriggerGameOver() {
-        if (trenutnafaza == GamePhase.GameOver) return;
+        if (trenutnafaza == GamePhase.GameOver || trenutnafaza == GamePhase.Pobjeda)
+            return;
         trenutnafaza = GamePhase.GameOver;
         Debug.Log("Game Over!");
         uiManager.PrikaziGameOver();
     }
 
+    public void TriggerPobjeda() {
+        if (trenutnafaza == GamePhase.GameOver || trenutnafaza == GamePhase.Pobjeda)
+            return;
+        trenutnafaza = GamePhase.Pobjeda;
+        Debug.Log("Pobjeda!");
+        uiManager.PrikaziPobjeda();
+    }
+
     public void PreskociFazu() {
-        if (trenutnafaza == GamePhase.GameOver)
+        if (trenutnafaza == GamePhase.GameOver || trenutnafaza == GamePhase.Pobjeda)
             return;
         if (trenutnafaza == GamePhase.Val)
             return;
