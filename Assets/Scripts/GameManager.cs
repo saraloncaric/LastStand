@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public UIManager uiManager;
+    public WaveLighting waveLighting;
 
     public enum GamePhase { Priprema, Val, GameOver, Pobjeda }
     public GamePhase trenutnafaza;
@@ -56,6 +57,9 @@ public class GameManager : MonoBehaviour
 
         OnWaveChanged?.Invoke(trenutniVal);
         Debug.Log("Val " + trenutniVal + " počinje!");
+
+        if (waveLighting != null)
+            waveLighting.SetWave(trenutniVal);
     }
 
     static float GetWaveDuration(int wave)
