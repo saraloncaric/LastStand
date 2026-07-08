@@ -419,7 +419,7 @@ public class DeploymentSystem : MonoBehaviour
         WeaponStats stats = v.instance.GetComponent<WeaponStats>();
         if (stats != null)
         {
-            stats.SetWave(gameManager != null ? gameManager.trenutniVal : 1);
+            stats.ApplyWeapon(v.oruzje);
             stats.ApplyRoleModifiers(v.chief);
         }
         SoldierAI ai = v.instance.GetComponent<SoldierAI>();

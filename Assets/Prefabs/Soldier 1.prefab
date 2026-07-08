@@ -10193,8 +10193,7 @@ GameObject:
   - component: {fileID: 2914291307499498667}
   - component: {fileID: 4753397394248004251}
   - component: {fileID: 9014966970309677774}
-  - component: {fileID: 5589190421355726736}
-  - component: {fileID: 8003838784271716793}
+  - component: {fileID: -3169305386486269700}
   m_Layer: 0
   m_Name: Soldier 1
   m_TagString: Untagged
@@ -10276,7 +10275,7 @@ MonoBehaviour:
   isTower: 0
   bloodCirclePrefab: {fileID: 0}
   bloodCircleDuration: 3
---- !u!114 &5589190421355726736
+--- !u!114 &-3169305386486269700
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10288,47 +10287,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07a982491ce08a4a8d95eaa5cb6b518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoldierAI
-  firePoint: {fileID: 2938904692064412953}
+  firePoint: {fileID: 0}
+  optimalRange: 36
   detectionRange: 68
   minHitChanceAtMaxRange: 0.35
   missSpreadMinDegrees: 4
   missSpreadMaxDegrees: 11
-  optimalRange: 36
-  bowPrefab: {fileID: 0}
-  bowLocalPosition: {x: 0.15, y: 1.05, z: 0.25}
-  bowLocalEuler: {x: 0, y: -90, z: 0}
-  bowScale: 0.75
+  bowPrefab: {fileID: 3317823749142253822, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+  swordPrefab: {fileID: 355312524381552382, guid: b84d7ca3927758646a65731cc107aa76, type: 3}
+  axePrefab: {fileID: 8203073568141072114, guid: 6cd1ac9652a50da4485a86492f47c63d, type: 3}
+  daggerPrefab: {fileID: 5458737265024032779, guid: ea816f7cece47574da091aaf86ab56f4, type: 3}
+  hammerPrefab: {fileID: 8591273635324488586, guid: 82f1e40c0cf7c5048a41bfa78b10c9d9, type: 3}
+  spearPrefab: {fileID: 0}
+  weaponLocalPos: {x: 0.2, y: 1.1, z: 0.3}
+  weaponLocalRot: {x: 0, y: -90, z: 0}
+  weaponScale: 1
   attackSound:
-    clip: {fileID: 8300000, guid: 20857e07e3b42e6419e1efd911a5b8eb, type: 3}
+    clip: {fileID: 0}
     volume: 1
     spatialBlend: 1
     minDistance: 2
-    maxDistance: 70
+    maxDistance: 30
     loop: 0
   attackAnimTrigger: Attack
---- !u!114 &8003838784271716793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005741440261053198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09bb4ecdc1dec1a489eb378e92bfde6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponStats
-  w1_damage: 20
-  w1_projectileSpeed: 28
-  w1_fireRate: 1.05
-  w1_projectilePrefab: {fileID: 0}
-  bloodCirclePrefab: {fileID: 0}
-  damage: 20
-  projectileSpeed: 15
-  fireRate: 1.5
-  meleeRange: 0
-  isMelee: 0
-  projectilePrefab: {fileID: 0}
 --- !u!1 &3015257503169294250
 GameObject:
   m_ObjectHideFlags: 0

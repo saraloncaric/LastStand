@@ -13,11 +13,18 @@ public class SoldierAI : MonoBehaviour
     [Range(1f, 15f)] public float missSpreadMinDegrees = 4f;
     [Range(1f, 20f)] public float missSpreadMaxDegrees = 11f;
 
-    [Header("Luk")]
+    [Header("Prefabi oružja")]
     public GameObject bowPrefab;
-    public Vector3 bowLocalPosition = new Vector3(0.15f, 1.05f, 0.25f);
-    public Vector3 bowLocalEuler = new Vector3(0f, -90f, 0f);
-    public float bowScale = 0.75f;
+    public GameObject swordPrefab;
+    public GameObject axePrefab;
+    public GameObject daggerPrefab;
+    public GameObject hammerPrefab;
+    public GameObject spearPrefab;
+
+    [Header("Pozicije oružja")]
+    public Vector3 weaponLocalPos = new Vector3(0.2f, 1.1f, 0.3f);
+    public Vector3 weaponLocalRot = new Vector3(0f, -90f, 0f);
+    public float weaponScale = 1f;
 
     [Header("Zvuk i animacija")]
     public SpatialSound attackSound;
@@ -34,6 +41,8 @@ public class SoldierAI : MonoBehaviour
     float fireCooldown;
     AudioSource audioSource;
     Animator animator;
+
+    GameObject currentWeapon;
 
     void Awake()
     {
@@ -61,20 +70,23 @@ public class SoldierAI : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
+
         animator = GetComponent<Animator>();
+
         if (weaponStats != null)
             GameManager.OnWaveChanged += OnWaveChanged;
 
         EnsureFirePoint();
-        EquipBow();
+        EquipWeapon();
     }
 
     void OnWaveChanged(int wave)
     {
         if (weaponStats == null)
             return;
-        weaponStats.SetWave(wave);
+
         weaponStats.ApplyRoleModifiers(_isChief);
+        EquipWeapon();
     }
 
     void OnDestroy()
@@ -107,15 +119,46 @@ public class SoldierAI : MonoBehaviour
         return point;
     }
 
-    void EquipBow()
+    void EquipWeapon()
     {
-        if (bowPrefab == null)
-            return;
+        if (weaponStats == null) return;
 
-        GameObject bow = Instantiate(bowPrefab, transform);
-        bow.transform.localPosition = bowLocalPosition;
-        bow.transform.localRotation = Quaternion.Euler(bowLocalEuler);
-        bow.transform.localScale = Vector3.one * bowScale;
+        if (currentWeapon != null)
+            Destroy(currentWeapon);
+
+        string naziv = weaponStats.currentWeaponName;
+
+        switch (naziv) {
+            case "Luk":
+                currentWeapon = Instantiate(bowPrefab, transform);
+                break;
+
+            case "Mač":
+                currentWeapon = Instantiate(swordPrefab, transform);
+                break;
+
+            case "Sjekira":
+                currentWeapon = Instantiate(axePrefab, transform);
+                break;
+
+            case "Bodež":
+                currentWeapon = Instantiate(daggerPrefab, transform);
+                break;
+
+            case "Čekić":
+                currentWeapon = Instantiate(hammerPrefab, transform);
+                break;
+
+            case "Koplje":
+                currentWeapon = Instantiate(spearPrefab, transform);
+                break;
+        }
+
+        if (currentWeapon != null) {
+            currentWeapon.transform.localPosition = weaponLocalPos;
+            currentWeapon.transform.localRotation = Quaternion.Euler(weaponLocalRot);
+            currentWeapon.transform.localScale = Vector3.one * weaponScale;
+        }
     }
 
     void Update()
@@ -160,7 +203,23 @@ public class SoldierAI : MonoBehaviour
         if (attackSound != null && attackSound.IsValid)
             GameAudio.PlayOneShot(audioSource, attackSound, SfxCategory.SoldierAttack);
 
-        Shoot(target);
+        if (weaponStats.isMelee)
+            MeleeAttack(target);
+        else
+            Shoot(target);
+    }
+
+    void MeleeAttack(GameObject target)
+    {
+        if (target == null || weaponStats == null) return;
+        if (!IsValidTarget(target)) return;
+
+        float dist = FlatDistance(transform.position, target.transform.position);
+        if (dist > weaponStats.range) return;
+
+        Health hp = target.GetComponent<Health>();
+        if (hp != null)
+            hp.TakeDamage(weaponStats.damage);
     }
 
     void Shoot(GameObject target)
@@ -191,7 +250,6 @@ public class SoldierAI : MonoBehaviour
         if (projectile != null)
         {
             projectile.damage = 0f;
-            projectile.speed = weaponStats.projectileSpeed;
         }
     }
 
@@ -315,11 +373,12 @@ public class SoldierAI : MonoBehaviour
         b.y = 0f;
         return Vector3.Distance(a, b);
     }
+
     public void SetDetectionRange(float range)
     {
         detectionRange = range;
         _baseMaxRange = range;
-        _baseOptimalRange = range * 0.53f; 
+        _baseOptimalRange = range * 0.53f;
         ApplyRangeModifiers();
     }
 }
