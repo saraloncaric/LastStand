@@ -17,6 +17,11 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] SpatialSound deathSound;
     [SerializeField] SpatialSound attackSound;
 
+    [Header("Tornjevi")]
+    [SerializeField] Transform mainTower;
+    [SerializeField] Transform sideTower1;
+    [SerializeField] Transform sideTower2;
+
     const float WalkVelocityThreshold = 0.15f;
     const float AnimSpeedOnThreshold = 0.25f;
     const float AnimSpeedOffThreshold = 0.12f;
@@ -49,7 +54,6 @@ public class EnemyAI : MonoBehaviour
     float _waveSpeedMultiplier = 1f;
 
     public bool IsTargetable => Time.time >= _spawnedAt + spawnTargetDelay;
-
     public void ApplyWaveSpeedMultiplier(float multiplier)
     {
         _waveSpeedMultiplier = Mathf.Max(0.1f, multiplier);
@@ -57,7 +61,6 @@ public class EnemyAI : MonoBehaviour
     }
 
     float GetMoveSpeed() => _moveSpeed * Mathf.Max(1f, transform.lossyScale.y) * _waveSpeedMultiplier;
-
     void ApplyMoveSpeed()
     {
         if (_agent == null)
@@ -80,7 +83,6 @@ public class EnemyAI : MonoBehaviour
         EnsureHitCollider();
 
         _attackDamage *= 0.8f;
-
         _scaledAttackRange = _attackRange;
 
         if (_agent != null)
@@ -107,15 +109,33 @@ public class EnemyAI : MonoBehaviour
 
     void Start()
     {
-        var goalObject = GameObject.FindGameObjectWithTag("Goal");
-        if (goalObject != null)
+        int wave = GameManager.Instance.trenutniVal;
+        if (wave == 1 || wave == 2)
         {
-            _goal = goalObject.transform;
-            _goalCollider = goalObject.GetComponent<Collider>();
-            if (_goalCollider == null)
-                _goalCollider = goalObject.GetComponentInChildren<Collider>();
-            _goalHealth = goalObject.GetComponent<Health>();
+            SetGoal(mainTower);
+            return;
         }
+
+        if (wave == 3) {
+            Transform[] options = { mainTower, sideTower1 };
+            SetGoal(options[Random.Range(0, options.Length)]);
+            return;
+        }
+
+        if (wave >= 4) {
+            Transform[] options = { mainTower, sideTower1, sideTower2 };
+            SetGoal(options[Random.Range(0, options.Length)]);
+            return;
+        }
+    }
+
+    void SetGoal(Transform t)
+    {
+        _goal = t;
+        _goalCollider = t.GetComponent<Collider>();
+        if (_goalCollider == null)
+            _goalCollider = t.GetComponentInChildren<Collider>();
+        _goalHealth = t.GetComponent<Health>();
     }
 
     void Update()
@@ -132,14 +152,12 @@ public class EnemyAI : MonoBehaviour
         if (_goal == null)
             return;
 
-        if (_agent == null || !_agent.isOnNavMesh)
-        {
+        if (_agent == null || !_agent.isOnNavMesh) {
             UpdateAnimatorSpeed();
             return;
         }
 
-        if (Time.time < _combatLockUntil)
-        {
+        if (Time.time < _combatLockUntil) {
             _agent.isStopped = true;
             FaceGoal();
             return;
@@ -148,14 +166,12 @@ public class EnemyAI : MonoBehaviour
         float distance = GetHorizontalDistanceToGoal();
         bool inAttackRange = distance <= _scaledAttackRange;
 
-        if (inAttackRange)
-        {
+        if (inAttackRange) {
             _agent.isStopped = true;
             _agent.ResetPath();
             FaceGoal();
 
-            if (Time.time < _nextAttackTime)
-            {
+            if (Time.time < _nextAttackTime) {
                 UpdateAnimatorSpeed();
                 return;
             }
@@ -186,40 +202,29 @@ public class EnemyAI : MonoBehaviour
         Vector3 toGoal = _goal.position - transform.position;
         toGoal.y = 0f;
         float flatDist = toGoal.magnitude;
+
         if (flatDist > 0.05f)
         {
             Vector3 dir = toGoal / flatDist;
-            if (Physics.Raycast(origin, dir, out RaycastHit hit, flatDist + 1f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
-                && IsGoalCollider(hit.collider))
+            if (Physics.Raycast(origin, dir, out RaycastHit hit, flatDist + 1f,
+                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
             {
-                return hit.distance;
+                if (hit.collider == _goalCollider || hit.collider.transform.IsChildOf(_goal))
+                    return hit.distance;
             }
         }
 
         Vector3 self = transform.position;
         self.y = 0f;
-
         if (_goalCollider != null)
         {
             Vector3 closest = _goalCollider.bounds.ClosestPoint(transform.position);
             closest.y = 0f;
             return Vector3.Distance(self, closest);
         }
-
         Vector3 goal = _goal.position;
         goal.y = 0f;
         return Vector3.Distance(self, goal);
-    }
-
-    bool IsGoalCollider(Collider col)
-    {
-        if (col == null)
-            return false;
-        if (col == _goalCollider)
-            return true;
-        if (_goal != null && col.transform.IsChildOf(_goal))
-            return true;
-        return col.CompareTag("Goal");
     }
 
     void FaceGoal()
@@ -277,7 +282,6 @@ public class EnemyAI : MonoBehaviour
             return;
 
         _hasHitReacted = true;
-
         if (_animator == null || _animator.runtimeAnimatorController == null)
             return;
 
@@ -295,7 +299,6 @@ public class EnemyAI : MonoBehaviour
             return;
 
         bool isMoving = !_agent.isStopped && _agent.velocity.sqrMagnitude > WalkVelocityThreshold * WalkVelocityThreshold;
-
         if (isMoving)
             GameAudio.PlayLoop(_walkSource, walkSound, SfxCategory.Footstep);
         else
@@ -306,25 +309,19 @@ public class EnemyAI : MonoBehaviour
     {
         if (_deathHandled)
             return;
-
         _deathHandled = true;
-        if (_agent != null)
-        {
+        if (_agent != null) {
             _agent.isStopped = true;
             _agent.enabled = false;
         }
-
         GameAudio.StopLoop(_walkSource);
         GameAudio.PlayAtPoint(deathSound, transform.position, SfxCategory.Death);
-
-        if (_animator != null && _animator.runtimeAnimatorController != null)
-        {
+        if (_animator != null && _animator.runtimeAnimatorController != null) {
             _animator.SetFloat(SpeedParam, 0f);
             _animator.SetTrigger(DieTrigger);
             StartCoroutine(DestroyAfterDeathAnimation());
         }
-        else
-        {
+        else {
             Destroy(gameObject, _deathDestroyDelay);
         }
     }
@@ -332,10 +329,8 @@ public class EnemyAI : MonoBehaviour
     IEnumerator DestroyAfterDeathAnimation()
     {
         yield return null;
-
         float wait = _deathDestroyDelay;
-        if (_animator != null)
-        {
+        if (_animator != null) {
             var state = _animator.GetCurrentAnimatorStateInfo(0);
             if (state.IsName("Death") && state.length > 0f)
                 wait = state.length;

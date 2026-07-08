@@ -21522,6 +21522,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   _moveSpeed: 4
   _attackDamage: 5
+  _attackRange: 1.25
+  _attackCooldown: 1.25
+  _deathDestroyDelay: 2
   walkSound:
     clip: {fileID: 8300000, guid: f885a3739417ca64fa3ec4a13f74f76f, type: 3}
     volume: 1
@@ -21543,6 +21546,9 @@ MonoBehaviour:
     minDistance: 2
     maxDistance: 70
     loop: 0
+  mainTower: {fileID: 8704039298504201348, guid: c3307f278debcec44bf353c4e55be038, type: 3}
+  sideTower1: {fileID: 5052538894042297887, guid: e25d36f0035e9d843996a6f562feea57, type: 3}
+  sideTower2: {fileID: 9064448841122537306, guid: 70cc755e425226a41a809a30c0aa14a4, type: 3}
   spawnTargetDelay: 1.5
 --- !u!114 &7470719284752328575
 MonoBehaviour:
