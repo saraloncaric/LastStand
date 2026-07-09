@@ -48,10 +48,21 @@ public class PauseMenu : MonoBehaviour
     static bool _sceneHookRegistered;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    static void Bootstrap() => EnsureForActiveScene();
+    static void Bootstrap()
+    {
+        if (SceneManager.GetActiveScene().name == "IntroScene")
+            return;
+        if (SceneManager.GetActiveScene().name == "OutroScene")
+            return;
+        EnsureForActiveScene();        
+    }
 
     static void EnsureForActiveScene()
     {
+        if (SceneManager.GetActiveScene().name == "IntroScene")
+            return;
+        if (SceneManager.GetActiveScene().name == "OutroScene")
+            return;
         if (!_sceneHookRegistered)
         {
             _sceneHookRegistered = true;
