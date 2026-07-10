@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
         }
 
         if (trenutnafaza == GamePhase.Val) {
-            ttimer -= Time.unscaledDeltaTime;
+            timer -= Time.unscaledDeltaTime;
             if (timer <= 0f)
                 ZavrsiVal();
         }
