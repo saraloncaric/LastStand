@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
     }
 
     [Header("Kretanje")]
-    public float moveSpeed = 28f;
+    public float moveSpeed = 20f;
     public float edgeScrollSize = 12f;
     public bool edgeScrollEnabled = true;
 
@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour
     public float maxX = 1500f;
 
     [Header("Rotacija")]
-    public float rotateSpeed = 80f;
+    public float rotateSpeed = 50f;
     public float minPitch = 25f;
     public float maxPitch = 189f;
 

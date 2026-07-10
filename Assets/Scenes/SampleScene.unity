@@ -2787,7 +2787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5f849362388c446b685188f5f15202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
-  moveSpeed: 28
+  moveSpeed: 20
   edgeScrollSize: 20
   edgeScrollEnabled: 0
   throttleStep: 0.05
@@ -2798,7 +2798,7 @@ MonoBehaviour:
   maxZ: 1800
   minX: 1000
   maxX: 1191
-  rotateSpeed: 80
+  rotateSpeed: 50
   minPitch: 25
   maxPitch: 89
 --- !u!1 &354454972
