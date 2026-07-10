@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
 
     [Header("Visina kamere")]
     public float minHeight = 22f;
-    public float maxHeight = 350f;
+    public float maxHeight = 1000f;
 
     [Header("Zoom (scroll)")]
     public float zoomSpeed = 20f;
@@ -37,9 +37,9 @@ public class CameraController : MonoBehaviour
     public float maxX = 1500f;
 
     [Header("Rotacija")]
-    public float rotateSpeed = 120f;
+    public float rotateSpeed = 80f;
     public float minPitch = 25f;
-    public float maxPitch = 80f;
+    public float maxPitch = 189f;
 
     float _throttle = 1f;
     public float Throttle => _throttle;
@@ -87,27 +87,17 @@ public class CameraController : MonoBehaviour
     void HandleZoom()
     {
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-            return;
-            
+        return;
         if (Mouse.current == null) return;
-        bool ctrl = Keyboard.current != null && 
+        bool ctrl = Keyboard.current != null &&
             (Keyboard.current.leftCtrlKey.isPressed || Keyboard.current.rightCtrlKey.isPressed);
         if (ctrl) return;
-
         float scroll = Mouse.current.scroll.ReadValue().y;
         if (Mathf.Approximately(scroll, 0f)) return;
-
-        Vector3 pos = transform.position;
-        float savedX = pos.x;
-        float savedZ = pos.z;
-        
-        pos.y -= scroll * zoomSpeed * 0.5f;
-        pos.y = Mathf.Clamp(pos.y, minHeight, maxHeight);
-        
-        pos.x = savedX;
-        pos.z = savedZ;
-        
-        transform.position = pos;
+        Vector3 zoomDir = transform.forward;
+        Vector3 newPos = transform.position + zoomDir * scroll * zoomSpeed;
+        newPos.y = Mathf.Clamp(newPos.y, minHeight, maxHeight);
+        transform.position = newPos;
     }
 
     void HandleMove()
@@ -182,6 +172,8 @@ public class CameraController : MonoBehaviour
         Vector3 euler = transform.eulerAngles;
         float yaw = euler.y;
         float pitch = euler.x;
+        if (pitch > 180f)
+            pitch -= 360f;
 
         if (rotateInput != 0f)
             yaw += rotateInput * rotateSpeed * Time.deltaTime;
@@ -189,14 +181,14 @@ public class CameraController : MonoBehaviour
         if (Mouse.current != null && Mouse.current.rightButton.isPressed)
         {
             float sens = MouseSensitivity;
+
             float dx = Mouse.current.delta.ReadValue().x;
             float dy = Mouse.current.delta.ReadValue().y;
-            yaw += dx * rotateSpeed * sens * Time.deltaTime;
-            pitch -= dy * rotateSpeed * sens * Time.deltaTime;
-        }
 
-        if (pitch > 180f) pitch -= 360f;
-        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+            yaw += dx * rotateSpeed * sens;
+            pitch -= dy * rotateSpeed * sens;
+        }
+        pitch = Mathf.Clamp(pitch, -10f, 85f);
         transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
     }
 }

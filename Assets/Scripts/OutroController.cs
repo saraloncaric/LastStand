@@ -25,7 +25,7 @@ public class OutroController : MonoBehaviour
 
     public void PonovoIgraj()
     {
-        SceneManager.LoadScene(gameSceneName);
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 
     public void GlavniIzbornik()
