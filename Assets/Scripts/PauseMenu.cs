@@ -228,7 +228,6 @@ public class PauseMenu : MonoBehaviour
         _paused = true;
         _rebindTarget = null;
         ShowPause();
-        Time.timeScale = 0f;
         IsPaused = true;
     }
 
@@ -237,7 +236,6 @@ public class PauseMenu : MonoBehaviour
         _paused = false;
         _rebindTarget = null;
         HideAll();
-        Time.timeScale = 1f;
         IsPaused = false;
     }
 

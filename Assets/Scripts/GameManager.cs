@@ -43,14 +43,14 @@ public class GameManager : MonoBehaviour
             return;
 
         if (trenutnafaza == GamePhase.Priprema) {
-            timer -= Time.deltaTime;
+            timer -= Time.unscaledDeltaTime;
             if (timer <= 0f)
                 PocniVal();
             return;
         }
 
         if (trenutnafaza == GamePhase.Val) {
-            timer -= Time.deltaTime;
+            ttimer -= Time.unscaledDeltaTime;
             if (timer <= 0f)
                 ZavrsiVal();
         }

@@ -102,7 +102,7 @@ public class WaveSystem : MonoBehaviour
                     fallbackAgent.speed *= wave.enemySpeedMultiplier;
             }
 
-            yield return new WaitForSeconds(wave.spawnInterval);
+            yield return new WaitForSecondsRealtime(wave.spawnInterval);
         }
 
         _spawning = false;
