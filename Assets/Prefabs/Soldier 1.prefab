@@ -10273,7 +10273,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   isTower: 0
-  bloodCirclePrefab: {fileID: 0}
+  bloodCirclePrefab: {fileID: 7963325272182396357, guid: dac8e15cccf037f42b763a9ac981699d, type: 3}
   bloodCircleDuration: 3
 --- !u!114 &-3169305386486269700
 MonoBehaviour:
@@ -10287,7 +10287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07a982491ce08a4a8d95eaa5cb6b518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoldierAI
-  firePoint: {fileID: 0}
+  firePoint: {fileID: 2938904692064412953}
   optimalRange: 36
   detectionRange: 68
   minHitChanceAtMaxRange: 0.35
@@ -10298,7 +10298,6 @@ MonoBehaviour:
   axePrefab: {fileID: 8203073568141072114, guid: 6cd1ac9652a50da4485a86492f47c63d, type: 3}
   daggerPrefab: {fileID: 5458737265024032779, guid: ea816f7cece47574da091aaf86ab56f4, type: 3}
   hammerPrefab: {fileID: 8591273635324488586, guid: 82f1e40c0cf7c5048a41bfa78b10c9d9, type: 3}
-  spearPrefab: {fileID: 0}
   weaponLocalPos: {x: 0.2, y: 1.1, z: 0.3}
   weaponLocalRot: {x: 0, y: -90, z: 0}
   weaponScale: 1

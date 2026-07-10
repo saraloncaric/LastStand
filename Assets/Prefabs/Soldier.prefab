@@ -10289,15 +10289,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoldierAI
   firePoint: {fileID: 2938904692064412953}
+  optimalRange: 36
   detectionRange: 68
   minHitChanceAtMaxRange: 0.35
   missSpreadMinDegrees: 4
   missSpreadMaxDegrees: 11
-  optimalRange: 36
   bowPrefab: {fileID: 3317823749142253822, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
-  bowLocalPosition: {x: 0.15, y: 1.05, z: 0.25}
-  bowLocalEuler: {x: 0, y: -90, z: 0}
-  bowScale: 0.75
+  swordPrefab: {fileID: 8203073568141072114, guid: 6cd1ac9652a50da4485a86492f47c63d, type: 3}
+  axePrefab: {fileID: 8203073568141072114, guid: 6cd1ac9652a50da4485a86492f47c63d, type: 3}
+  daggerPrefab: {fileID: 5458737265024032779, guid: ea816f7cece47574da091aaf86ab56f4, type: 3}
+  hammerPrefab: {fileID: 8591273635324488586, guid: 82f1e40c0cf7c5048a41bfa78b10c9d9, type: 3}
+  weaponLocalPos: {x: 0.2, y: 1.1, z: 0.3}
+  weaponLocalRot: {x: 0, y: -90, z: 0}
+  weaponScale: 1
   attackSound:
     clip: {fileID: 8300000, guid: 7c6041f0c73240840bf4f4e50a46d83b, type: 3}
     volume: 1
@@ -10318,17 +10322,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09bb4ecdc1dec1a489eb378e92bfde6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponStats
-  w1_damage: 20
-  w1_projectileSpeed: 28
-  w1_fireRate: 1.05
-  w1_projectilePrefab: {fileID: 5354562596282687935, guid: 6e2afa6083c57ff41b26e95c4683d47e, type: 3}
-  bloodCirclePrefab: {fileID: 7963325272182396357, guid: dac8e15cccf037f42b763a9ac981699d, type: 3}
+  arrowPrefab: {fileID: 0}
+  bowDamage: 20
+  daggerDamage: 15
+  swordDamage: 25
+  axeDamage: 35
+  bowFireRate: 1.05
+  daggerRate: 0.6
+  swordRate: 0.9
+  axeRate: 1.2
+  meleeRange: 12
   damage: 20
-  projectileSpeed: 28
   fireRate: 1.05
-  meleeRange: 0
+  range: 0
   isMelee: 0
   projectilePrefab: {fileID: 0}
+  currentWeaponName: 
 --- !u!1 &3015257503169294250
 GameObject:
   m_ObjectHideFlags: 0

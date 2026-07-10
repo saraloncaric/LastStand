@@ -21406,6 +21406,7 @@ GameObject:
   - component: {fileID: -2762695230884077068}
   - component: {fileID: -6291130554044738429}
   - component: {fileID: 7470719284752328575}
+  - component: {fileID: 6054994125250613266}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Enemy
@@ -21563,6 +21564,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LootSystem
   coinsReward: 3
+--- !u!136 &6054994125250613266
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5988109855496401481}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &6031306231926162411
 GameObject:
   m_ObjectHideFlags: 0

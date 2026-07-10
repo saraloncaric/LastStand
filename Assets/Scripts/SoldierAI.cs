@@ -19,7 +19,6 @@ public class SoldierAI : MonoBehaviour
     public GameObject axePrefab;
     public GameObject daggerPrefab;
     public GameObject hammerPrefab;
-    public GameObject spearPrefab;
 
     [Header("Pozicije oružja")]
     public Vector3 weaponLocalPos = new Vector3(0.2f, 1.1f, 0.3f);
@@ -144,14 +143,6 @@ public class SoldierAI : MonoBehaviour
             case "Bodež":
                 currentWeapon = Instantiate(daggerPrefab, transform);
                 break;
-
-            case "Čekić":
-                currentWeapon = Instantiate(hammerPrefab, transform);
-                break;
-
-            case "Koplje":
-                currentWeapon = Instantiate(spearPrefab, transform);
-                break;
         }
 
         if (currentWeapon != null) {
@@ -211,11 +202,10 @@ public class SoldierAI : MonoBehaviour
 
     void MeleeAttack(GameObject target)
     {
-        if (target == null || weaponStats == null) return;
-        if (!IsValidTarget(target)) return;
-
         float dist = FlatDistance(transform.position, target.transform.position);
-        if (dist > weaponStats.range) return;
+
+        if (dist > weaponStats.range)
+            return;
 
         Health hp = target.GetComponent<Health>();
         if (hp != null)

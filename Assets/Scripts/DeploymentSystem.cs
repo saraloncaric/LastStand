@@ -313,7 +313,6 @@ public class DeploymentSystem : MonoBehaviour
             int lokIndex = i;
             if (lokacije[i].zauzeto) continue;
 
-            // prikaz tipa lokacije
             string tipLabel = lokacije[i].tip == Lokacija.TipLokacije.Toranj
                 ? " [Toranj + range]"
                 : " [Zid]";

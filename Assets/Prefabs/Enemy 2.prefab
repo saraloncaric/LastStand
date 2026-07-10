@@ -30865,6 +30865,7 @@ GameObject:
   - component: {fileID: 6174786660611362946}
   - component: {fileID: 5178229370863570375}
   - component: {fileID: 7707833231654848171}
+  - component: {fileID: 4721588622926961981}
   m_Layer: 0
   m_Name: Enemy 2
   m_TagString: Enemy
@@ -31022,3 +31023,26 @@ MonoBehaviour:
   sideTower1: {fileID: 5052538894042297887, guid: e25d36f0035e9d843996a6f562feea57, type: 3}
   sideTower2: {fileID: 9064448841122537306, guid: 70cc755e425226a41a809a30c0aa14a4, type: 3}
   spawnTargetDelay: 1.5
+--- !u!136 &4721588622926961981
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9201498422394542509}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
