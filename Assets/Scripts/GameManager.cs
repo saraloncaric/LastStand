@@ -21,7 +21,14 @@ public class GameManager : MonoBehaviour
     public static event Action<int> OnWaveChanged;
     public static event Action OnPreparePhase;
 
-    void Awake() {
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
     }
 
